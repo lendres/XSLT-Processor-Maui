@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Project>
+	<PropertyGroup>
+		<Title>XSLT Processor</Title>
+		<Product>XSLT Processor</Product>
+		<Copyright>2024 Lance A. Endres</Copyright>
+		<Company>Digital Production</Company>
+		<Description>A simple XSLT Processor.</Description>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<AssemblyAttribute Include="DigitalProduction.Reflection.AuthorsAttribute">
+			<_Parameter1>Lance A. Endres</_Parameter1>
+		</AssemblyAttribute>
+	</ItemGroup>
+
+	<ItemGroup>
+		<AssemblyAttribute Include="DigitalProduction.Reflection.WebsiteAttribute">
+			<_Parameter1>https://github.com/lendres/XSLT-Processor-Maui</_Parameter1>
+		</AssemblyAttribute>
+	</ItemGroup>
+
+	<ItemGroup>
+		<AssemblyAttribute Include="DigitalProduction.Reflection.IssuesAddressAttribute">
+			<_Parameter1>https://github.com/lendres/XSLT-Processor-Maui</_Parameter1>
+		</AssemblyAttribute>
+	</ItemGroup>
+</Project>

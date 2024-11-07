@@ -5,10 +5,9 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:XSLTProcessorMaui"
     Shell.FlyoutBehavior="Disabled"
-    Title="XSLTProcessorMaui">
+    Title="XSLT Processor">
 
     <ShellContent
-        Title="Home"
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage" />
 

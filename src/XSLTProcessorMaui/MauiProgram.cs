@@ -1,25 +1,39 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using CommunityToolkit.Maui;
+using Microsoft.Extensions.Logging;
+using Microsoft.Maui.LifecycleEvents;
 
-namespace XSLTProcessorMaui
+namespace XSLTProcessorMaui;
+
+public static class MauiProgram
 {
-	public static class MauiProgram
+	public static MauiApp CreateMauiApp()
 	{
-		public static MauiApp CreateMauiApp()
-		{
-			var builder = MauiApp.CreateBuilder();
-			builder
-				.UseMauiApp<App>()
-				.ConfigureFonts(fonts =>
-				{
-					fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-					fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-				});
+		MauiAppBuilder builder = MauiApp.CreateBuilder();
+		builder
+			.UseMauiApp<App>()
+			.UseMauiCommunityToolkit()
+			.ConfigureFonts(fonts =>
+			{
+				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
+				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+			});
+		#if WINDOWS
+			builder.ConfigureLifecycleEvents(lifecycle =>  
+			{
+				lifecycle.AddWindows((builder) =>  
+				{  
+					builder.OnWindowCreated(del =>  
+					{  
+						del.Title = "XSLT Processor";
+					});  
+				});  
+			});
+		#endif
 
-#if DEBUG
+		#if DEBUG
 			builder.Logging.AddDebug();
-#endif
+		#endif
 
-			return builder.Build();
-		}
+		return builder.Build();
 	}
 }
