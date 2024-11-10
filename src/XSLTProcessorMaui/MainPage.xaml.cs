@@ -2,11 +2,11 @@
 using DigitalProduction.Controls;
 using DigitalProduction.ViewModels;
 using DigitalProduction.Views;
+
 namespace XSLTProcessorMaui;
 
 public partial class MainPage : DigitalProductionMainPage
 {
-	int count = 0;
 
 	public MainPage()
 	{
@@ -19,15 +19,46 @@ public partial class MainPage : DigitalProductionMainPage
 		_ = await Shell.Current.ShowPopupAsync(view);
 	}
 
-	private void OnCounterClicked(object sender, EventArgs e)
+	public async void OnBrowseForXmlInputFile(object sender, EventArgs eventArgs)
 	{
-		count++;
+		PickOptions pickOptions	= new() { PickerTitle = "Select an XML File" };
+		pickOptions.FileTypes	= DigitalProduction.IO.FileTypes.Xml;
+		FileResult? result = await BrowseForFile(pickOptions);
+		if (result != null)
+		{
+			XmlInputFileEntry.Text = result.FullPath;
+		}
+	}
 
-		if (count == 1)
-			CounterBtn.Text = $"Clicked {count} time";
-		else
-			CounterBtn.Text = $"Clicked {count} times";
+	public async void OnBrowseForXsltFile(object sender, EventArgs eventArgs)
+	{
+		PickOptions pickOptions = new() { PickerTitle = "Select an XML File" };
+		pickOptions.FileTypes   = DigitalProduction.IO.FileTypes.Xslt;
+		FileResult? result = await BrowseForFile(pickOptions);
+		if (result != null)
+		{
+			XsltFileEntry.Text = result.FullPath;
+		}
+	}
 
-		SemanticScreenReader.Announce(CounterBtn.Text);
+	public static async Task<FileResult?> BrowseForFile(PickOptions options)
+	{
+		
+		try
+		{
+			return await FilePicker.PickAsync(options);
+		}
+		catch
+		{
+			//(Exception exception)
+			//string message = exception.Message;
+			// The user canceled or something went wrong.
+		}
+
+		return null;
+	}
+
+	protected virtual async void OnProcessButtonClicked(object? sender, EventArgs eventArgs)
+	{
 	}
 }
