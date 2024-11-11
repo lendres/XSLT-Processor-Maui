@@ -23,6 +23,7 @@
 	</ContentPage.MenuBarItems>
 
 	<ContentPage.Resources>
+		<toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter"/>
 		<dpconverters:FirstValidationErrorConverter x:Key="FirstValidationErrorConverter"/>
 	</ContentPage.Resources>
 
@@ -64,7 +65,7 @@
                 <Button
 					Grid.Row="1" Grid.Column="1"
 					Text="Browse"
-					SemanticProperties.Hint="Browse for the configuration list file."
+					SemanticProperties.Hint="Browse for the XML file."
 					Clicked="OnBrowseForXmlInputFile"
 					HorizontalOptions="Center"
 					VerticalOptions="Fill"/>
@@ -90,10 +91,63 @@
 				<Button
 					Grid.Row="4" Grid.Column="1"
 					Text="Browse"
-					SemanticProperties.Hint="Browse for the configuration list file."
+					SemanticProperties.Hint="Browse for the XSLT file."
 					Clicked="OnBrowseForXsltFile"
 					HorizontalOptions="Center"
 					VerticalOptions="Fill"/>
+
+				<!-- XSLT arguments. -->
+				<Label
+					Grid.Row="6" Grid.Column="0"
+					Text="XSLT Arguments" StyleClass="TitleLabel"/>
+				<Entry
+					Grid.Row="7" Grid.Column="0"
+					x:Name="XsltArgumentsEntry"
+					Placeholder="XSLT Arguments"
+					Text="{Binding XsltArguments.Value}"
+					HorizontalOptions="FillAndExpand">
+					<!--<Entry.Behaviors>
+						<toolkit:EventToCommandBehavior Command="{Binding ValidateXsltArgumentsCommand}" EventName="TextChanged"/>
+					</Entry.Behaviors>-->
+				</Entry>
+				<!--<Label
+					Grid.Row="8" Grid.Column="0"
+					Text="{Binding XsltArguments.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
+					StyleClass="InvalidLabelStyle"/>-->
+				<Button
+					Grid.Row="7" Grid.Column="1"
+					Text="Clear"
+					SemanticProperties.Hint="Clear the XSLT arguments."
+					Command="{Binding ClearXsltArgumentsCommand}"
+					HorizontalOptions="Center"
+					VerticalOptions="Fill"/>
+
+				<!-- Output file. -->
+				<!--<Label
+					Grid.Row="9" Grid.Column="0"
+					Text="Output File" StyleClass="TitleLabel"/>
+				<Entry
+					Grid.Row="10" Grid.Column="0"
+					x:Name="OutputFileEntry"
+					Placeholder="Output File"
+					Text="{Binding OutputFile.Value}"
+					HorizontalOptions="FillAndExpand">
+					<Entry.Behaviors>
+						<toolkit:EventToCommandBehavior Command="{Binding ValidateOutputFileCommand}" EventName="TextChanged"/>
+					</Entry.Behaviors>
+				</Entry>
+				<Label
+					Grid.Row="8" Grid.Column="0"
+					Text="{Binding OutputFile.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
+					StyleClass="InvalidLabelStyle"/>
+				<Button
+					Grid.Row="7" Grid.Column="1"
+					Text="Clear"
+					SemanticProperties.Hint="Browse for the output file."
+					Clicked="OnBrowseForOutputFile"
+					HorizontalOptions="Center"
+					VerticalOptions="Fill"/>-->
+
 
 			</Grid>
 			
@@ -108,7 +162,52 @@
                 SemanticProperties.HeadingLevel="Level2"/>
             <BoxView Style="{StaticResource HorizontalBoarder}"/>
 
-			
+
+			<Grid
+				Grid.Row="1"
+				RowDefinitions="Auto,Auto,25,Auto,Auto,25,Auto,Auto,25,Auto,Auto,25,Auto,Auto,17"
+				RowSpacing="0"
+				ColumnDefinitions="*,100"
+				ColumnSpacing="8">
+				<!-- The checkbox seems to fudge the spacing hard.  A forced hack of a fix is used. -->
+				<VerticalStackLayout Grid.Row="0" Grid.Column="0" Padding="0" Spacing="0" VerticalOptions="Center">
+					<!-- Force the height to be smaller than it wants to be to take up the unwanted spacing. -->
+					<HorizontalStackLayout Padding="0" Spacing="0" VerticalOptions="Center" HeightRequest="22">
+						<CheckBox
+							IsChecked="{Binding RunPostprocessing}"
+							VerticalOptions="Center"/>
+						<!-- Enlarge the label so the desenders don't get cut off. -->
+						<Label Text="Run Postprocessing" VerticalOptions="Center" Margin="0" HeightRequest="25" Padding="0"/>
+					</HorizontalStackLayout>
+					<!-- Pad the bottom to provide spacing before the next element. -->
+					<HorizontalStackLayout  Padding="0" Spacing="0" HeightRequest="8"/>
+				</VerticalStackLayout>
+				<Entry
+						Grid.Row="1" Grid.Column="0"
+						x:Name="PostprocessorEntry"
+						Placeholder="Postprocessor"
+						Text="{Binding Postprocessor.Value}"
+						HorizontalOptions="FillAndExpand"
+						IsEnabled="{Binding RunPostprocessing}">
+					<Entry.Behaviors>
+						<toolkit:EventToCommandBehavior Command="{Binding ValidateOutputFileCommand}" EventName="TextChanged"/>
+					</Entry.Behaviors>
+				</Entry>
+				<!--<Label
+						Grid.Row="8" Grid.Column="0"
+						Text="{Binding PostProcessor.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
+						StyleClass="InvalidLabelStyle"/>-->
+				<Button
+						Grid.Row="1" Grid.Column="1"
+						Text="Browse"
+						SemanticProperties.Hint="Browse for the postprocessing file."
+						Clicked="OnBrowseForPostProcessor"
+						HorizontalOptions="Center"
+						VerticalOptions="Fill"
+						IsEnabled="{Binding RunPostprocessing}"/>
+			</Grid>
+
+
 			<!-- Bottom Buttons -->
             <HorizontalStackLayout StyleClass="BottomButtonRowStyle">
                 <Button 

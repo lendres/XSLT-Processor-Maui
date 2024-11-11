@@ -21,8 +21,11 @@ public partial class MainPage : DigitalProductionMainPage
 
 	public async void OnBrowseForXmlInputFile(object sender, EventArgs eventArgs)
 	{
-		PickOptions pickOptions	= new() { PickerTitle = "Select an XML File" };
-		pickOptions.FileTypes	= DigitalProduction.IO.FileTypes.Xml;
+		PickOptions pickOptions = new()
+		{
+			PickerTitle = "Select an XML File",
+			FileTypes   = DigitalProduction.IO.FileTypes.Xml
+		};
 		FileResult? result = await BrowseForFile(pickOptions);
 		if (result != null)
 		{
@@ -32,12 +35,36 @@ public partial class MainPage : DigitalProductionMainPage
 
 	public async void OnBrowseForXsltFile(object sender, EventArgs eventArgs)
 	{
-		PickOptions pickOptions = new() { PickerTitle = "Select an XML File" };
-		pickOptions.FileTypes   = DigitalProduction.IO.FileTypes.Xslt;
+		PickOptions pickOptions = new()
+		{
+			PickerTitle = "Select an XML File",
+			FileTypes   = DigitalProduction.IO.FileTypes.Xslt
+		};
 		FileResult? result = await BrowseForFile(pickOptions);
 		if (result != null)
 		{
 			XsltFileEntry.Text = result.FullPath;
+		}
+	}
+
+	//public async void OnBrowseForOutputFile(object sender, EventArgs eventArgs)
+	//{
+	//	PickOptions pickOptions = new() { PickerTitle = "Select an XML File" };
+	//	pickOptions.FileTypes   = DigitalProduction.IO.FileTypes.Xslt;
+	//	FileResult? result = await BrowseForFile(pickOptions);
+	//	if (result != null)
+	//	{
+	//		XsltFileEntry.Text = result.FullPath;
+	//	}
+	//}
+
+	public async void OnBrowseForPostProcessor(object sender, EventArgs eventArgs)
+	{
+		PickOptions pickOptions = new() { PickerTitle = "Select a Postprocessor" };
+		FileResult? result = await BrowseForFile(pickOptions);
+		if (result != null)
+		{
+			PostprocessorEntry.Text = result.FullPath;
 		}
 	}
 

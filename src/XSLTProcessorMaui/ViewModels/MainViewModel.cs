@@ -22,10 +22,10 @@ public partial class MainViewModel : ObservableObject
 	private ValidatableObject<string>			_outputFile						= new();
 
 	[ObservableProperty]
-	private bool								_runPostProcessing;
+	private bool								_runPostprocessing;
 
 	[ObservableProperty]
-	private ValidatableObject<string>			_postProcessor					= new();
+	private ValidatableObject<string>			_postprocessor					= new();
 
 	[ObservableProperty]
 	private bool								_isSubmittable;
@@ -47,8 +47,8 @@ public partial class MainViewModel : ObservableObject
 		XsltFile.Value			= Preferences.XsltFile;
 		XsltArguments.Value		= Preferences.XsltArguments;
 		OutputFile.Value		= Preferences.OutputFile;
-		RunPostProcessing		= Preferences.RunPostprocessor;
-		PostProcessor.Value		= Preferences.Postprocessor;
+		RunPostprocessing		= Preferences.RunPostprocessor;
+		Postprocessor.Value		= Preferences.Postprocessor;
 	}
 
 	private void AddValidations()
@@ -65,9 +65,9 @@ public partial class MainViewModel : ObservableObject
 		OutputFile.Validations.Add(new IsNotNullOrEmptyRule { ValidationMessage = "A file name is required." });
 		OutputFile.Validate();
 
-		PostProcessor.Validations.Add(new IsNotNullOrEmptyRule	{ ValidationMessage = "A file name is required." });
-		PostProcessor.Validations.Add(new FileExistsRule		{ ValidationMessage = "The file does not exist." });
-		PostProcessor.Validate();
+		Postprocessor.Validations.Add(new IsNotNullOrEmptyRule	{ ValidationMessage = "A file name is required." });
+		Postprocessor.Validations.Add(new FileExistsRule		{ ValidationMessage = "The file does not exist." });
+		Postprocessor.Validate();
 
 		ValidateSubmittable();
 	}
@@ -98,9 +98,9 @@ public partial class MainViewModel : ObservableObject
 	}
 
 	[RelayCommand]
-	private void ValidatePostProcessor()
+	private void ValidatePostprocessor()
 	{
-		PostProcessor.Validate();
+		Postprocessor.Validate();
 		ValidateSubmittable();
 	}
 
@@ -108,7 +108,7 @@ public partial class MainViewModel : ObservableObject
 		XmlInputFile.IsValid &&
 		XsltFile.IsValid &&
 		OutputFile.IsValid &&
-		PostProcessor.IsValid;
+		Postprocessor.IsValid;
 
 	#endregion
 
@@ -118,16 +118,22 @@ public partial class MainViewModel : ObservableObject
 	#region On Properties Changed
 	#endregion
 
+	[RelayCommand]
+	private void ClearXsltArguments()
+	{
+		XsltArguments.Value = "";
+	}
+
 
 	[RelayCommand]
 	private void SaveSettings()
 	{
-		Preferences.XmlInputFile      = XmlInputFile.Value!.Trim();
-		Preferences.XsltFile          = XsltFile.Value!.Trim();
-		Preferences.XsltArguments     = XsltArguments.Value!.Trim();
-		Preferences.OutputFile            = OutputFile.Value!.Trim();
-		Preferences.RunPostprocessor  = RunPostProcessing;
-		Preferences.Postprocessor     = PostProcessor.Value!.Trim();
+		Preferences.XmlInputFile		= XmlInputFile.Value!.Trim();
+		Preferences.XsltFile			= XsltFile.Value!.Trim();
+		Preferences.XsltArguments		= XsltArguments.Value!.Trim();
+		Preferences.OutputFile			= OutputFile.Value!.Trim();
+		Preferences.RunPostprocessor	= RunPostprocessing;
+		Preferences.Postprocessor		= Postprocessor.Value!.Trim();
 		ValidateSubmittable();
 	}
 
