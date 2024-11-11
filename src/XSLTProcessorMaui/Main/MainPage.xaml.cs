@@ -9,10 +9,20 @@ namespace XSLTProcessorMaui;
 
 public partial class MainPage : DigitalProductionMainPage
 {
-
 	public MainPage()
 	{
 		InitializeComponent();
+	}
+
+	/// <summary>
+	/// Override to set the height to something usable.
+	/// </summary>
+	protected override void OnAppearing()
+	{
+		base.OnAppearing();
+		App.Window!.MinimumWidth = 600;
+		App.Window.MinimumHeight = 810;
+		App.Window.MaximumHeight = 810;
 	}
 
 	async void OnAbout(object sender, EventArgs eventArgs)
