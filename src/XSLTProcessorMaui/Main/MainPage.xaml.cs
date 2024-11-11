@@ -84,8 +84,4 @@ public partial class MainPage : DigitalProductionMainPage
 
 		return null;
 	}
-
-	protected virtual async void OnProcessButtonClicked(object? sender, EventArgs eventArgs)
-	{
-	}
 }

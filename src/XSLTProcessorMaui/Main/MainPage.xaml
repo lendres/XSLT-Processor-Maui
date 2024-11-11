@@ -214,7 +214,7 @@
 					Text="Process"
 					HorizontalOptions="End"
 					IsEnabled="{Binding IsSubmittable}"
-					Clicked="OnProcessButtonClicked"/>
+					Command="{Binding ProcessCommand}"/>
                 <Button 
 					Text="Close"
 					HorizontalOptions="End"

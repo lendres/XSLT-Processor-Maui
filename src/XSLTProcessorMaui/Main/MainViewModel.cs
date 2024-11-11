@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DigitalProduction.Validation;
-using System.Xml.Linq;
 
 namespace XSLTProcessorMaui.ViewModels;
 
@@ -74,6 +73,11 @@ public partial class MainViewModel : ObservableObject
 
 	#endregion
 
+	#region Properties
+	public ProcessingResult ProcessingResult { get; set; }
+
+	#endregion
+
 	#region Validation
 
 	[RelayCommand]
@@ -112,11 +116,7 @@ public partial class MainViewModel : ObservableObject
 
 	#endregion
 
-	#region Properties
-	#endregion
-
-	#region On Properties Changed
-	#endregion
+	#region Commands
 
 	[RelayCommand]
 	private void ClearXsltArguments()
@@ -125,7 +125,6 @@ public partial class MainViewModel : ObservableObject
 	}
 
 
-	[RelayCommand]
 	private void SaveSettings()
 	{
 		Preferences.XmlInputFile		= XmlInputFile.Value!.Trim();
@@ -136,5 +135,15 @@ public partial class MainViewModel : ObservableObject
 		Preferences.Postprocessor		= Postprocessor.Value!.Trim();
 		ValidateSubmittable();
 	}
+
+	[RelayCommand]
+	private void Process()
+	{
+		SaveSettings();
+		ProcessingResult = XsltProcessor.Transform(XmlInputFile.Value!, XsltFile.Value!, XsltArguments.Value!, OutputFile.Value!, RunPostprocessing, Postprocessor.Value!);
+
+	}
+
+	#endregion
 
 } // End class.
