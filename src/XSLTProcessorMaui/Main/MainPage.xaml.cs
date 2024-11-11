@@ -1,7 +1,9 @@
-﻿using CommunityToolkit.Maui.Views;
+﻿using CommunityToolkit.Maui.Storage;
+using CommunityToolkit.Maui.Views;
 using DigitalProduction.Controls;
 using DigitalProduction.ViewModels;
 using DigitalProduction.Views;
+using XSLTProcessorMaui.ViewModels;
 
 namespace XSLTProcessorMaui;
 
@@ -47,16 +49,15 @@ public partial class MainPage : DigitalProductionMainPage
 		}
 	}
 
-	//public async void OnBrowseForOutputFile(object sender, EventArgs eventArgs)
-	//{
-	//	PickOptions pickOptions = new() { PickerTitle = "Select an XML File" };
-	//	pickOptions.FileTypes   = DigitalProduction.IO.FileTypes.Xslt;
-	//	FileResult? result = await BrowseForFile(pickOptions);
-	//	if (result != null)
-	//	{
-	//		XsltFileEntry.Text = result.FullPath;
-	//	}
-	//}
+	private async void OnBrowseForOutputDirectory(object sender, EventArgs eventArgs)
+	{
+		CancellationToken cancellationToken = new();
+		FolderPickerResult folderResult = await FolderPicker.PickAsync(OutputDirectoryEntry.Text, cancellationToken);
+		if (folderResult.IsSuccessful)
+		{
+			OutputDirectoryEntry.Text = folderResult.Folder.Path;
+		}
+	}
 
 	public async void OnBrowseForPostProcessor(object sender, EventArgs eventArgs)
 	{
@@ -83,5 +84,17 @@ public partial class MainPage : DigitalProductionMainPage
 		}
 
 		return null;
+	}
+
+	protected virtual async void OnProcessButtonClicked(object? sender, EventArgs eventArgs)
+	{
+		MainViewModel? viewModel = BindingContext as MainViewModel;
+		System.Diagnostics.Debug.Assert(viewModel != null);
+
+		if (!DigitalProduction.IO.Path.PathIsWritable(viewModel.OutputFileFullPath))
+		{
+			await DisplayAlert("Error", "The output file is not writable.  The file may be open by another application.  Please resolve the situation or choose another file name.", "Ok");
+			return;
+		}
 	}
 }

@@ -39,7 +39,7 @@ public static class Preferences
 	/// </summary>
 	public static string OutputFile
 	{
-		get => Microsoft.Maui.Storage.Preferences.Default.Get("Output File", "Output.xml");
+		get => Microsoft.Maui.Storage.Preferences.Default.Get("Output File", "");
 		set => Microsoft.Maui.Storage.Preferences.Default.Set("Output File", value);
 	}
 

@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using DigitalProduction.Interface;
 using DigitalProduction.Validation;
 
 namespace XSLTProcessorMaui.ViewModels;
@@ -21,7 +22,10 @@ public partial class MainViewModel : ObservableObject
 	private ValidatableObject<string>			_outputFile						= new();
 
 	[ObservableProperty]
-	private bool								_runPostprocessing;
+	private ValidatableObject<string>			_outputDirectory				= new();
+
+	[ObservableProperty]
+	private bool								_runPostprocessing				= false;
 
 	[ObservableProperty]
 	private ValidatableObject<string>			_postprocessor					= new();
@@ -52,29 +56,30 @@ public partial class MainViewModel : ObservableObject
 
 	private void AddValidations()
 	{
-
 		XmlInputFile.Validations.Add(new IsNotNullOrEmptyRule	{ ValidationMessage = "A file name is required." });
-		XmlInputFile.Validations.Add(new FileExistsRule		{ ValidationMessage = "The file does not exist." });
+		XmlInputFile.Validations.Add(new FileExistsRule			{ ValidationMessage = "The file does not exist." });
 		XmlInputFile.Validate();
 
 		XsltFile.Validations.Add(new IsNotNullOrEmptyRule	{ ValidationMessage = "A file name is required." });
-		XsltFile.Validations.Add(new FileExistsRule		{ ValidationMessage = "The file does not exist." });
+		XsltFile.Validations.Add(new FileExistsRule			{ ValidationMessage = "The file does not exist." });
 		XsltFile.Validate();
 
 		OutputFile.Validations.Add(new IsNotNullOrEmptyRule { ValidationMessage = "A file name is required." });
 		OutputFile.Validate();
 
-		Postprocessor.Validations.Add(new IsNotNullOrEmptyRule	{ ValidationMessage = "A file name is required." });
-		Postprocessor.Validations.Add(new FileExistsRule		{ ValidationMessage = "The file does not exist." });
-		Postprocessor.Validate();
+		OutputDirectory.Validations.Add(new IsNotNullOrEmptyRule	{ ValidationMessage = "A directory is required." });
+		OutputDirectory.Validations.Add(new DirectoryExistsRule		{ ValidationMessage = "The directory does not exist." });
+		OutputDirectory.Validate();
 
-		ValidateSubmittable();
+		OnRunPostprocessingChanged(RunPostprocessing);
 	}
 
 	#endregion
 
 	#region Properties
-	public ProcessingResult ProcessingResult { get; set; }
+	public ProcessingResult ProcessingResult { get; set; } = new();
+
+	public string OutputFileFullPath { get => Path.Combine(OutputDirectory.Value!, OutputFile.Value!); }
 
 	#endregion
 
@@ -102,17 +107,44 @@ public partial class MainViewModel : ObservableObject
 	}
 
 	[RelayCommand]
+	private void ValidateOutputDirectory()
+	{
+		OutputDirectory.Validate();
+		ValidateSubmittable();
+	}
+
+	[RelayCommand]
 	private void ValidatePostprocessor()
 	{
 		Postprocessor.Validate();
-		ValidateSubmittable();
+        ValidateSubmittable();
 	}
 
 	public bool ValidateSubmittable() => IsSubmittable =
 		XmlInputFile.IsValid &&
 		XsltFile.IsValid &&
 		OutputFile.IsValid &&
+		OutputDirectory.IsValid &&
 		Postprocessor.IsValid;
+
+	#endregion
+
+	#region On Properties Changed
+
+	partial void OnRunPostprocessingChanged(bool value)
+	{
+		if (value)
+		{ 
+			Postprocessor.Validations.Add(new IsNotNullOrEmptyRule { ValidationMessage = "A file name is required." });
+			Postprocessor.Validations.Add(new FileExistsRule { ValidationMessage = "The file does not exist." });
+			ValidatePostprocessor();
+		}
+		else
+		{
+			Postprocessor.Validations.Clear();
+			ValidatePostprocessor();
+		}
+	}
 
 	#endregion
 
@@ -124,7 +156,6 @@ public partial class MainViewModel : ObservableObject
 		XsltArguments.Value = "";
 	}
 
-
 	private void SaveSettings()
 	{
 		Preferences.XmlInputFile		= XmlInputFile.Value!.Trim();
@@ -133,7 +164,6 @@ public partial class MainViewModel : ObservableObject
 		Preferences.OutputFile			= OutputFile.Value!.Trim();
 		Preferences.RunPostprocessor	= RunPostprocessing;
 		Preferences.Postprocessor		= Postprocessor.Value!.Trim();
-		ValidateSubmittable();
 	}
 
 	[RelayCommand]
@@ -141,7 +171,6 @@ public partial class MainViewModel : ObservableObject
 	{
 		SaveSettings();
 		ProcessingResult = XsltProcessor.Transform(XmlInputFile.Value!, XsltFile.Value!, XsltArguments.Value!, OutputFile.Value!, RunPostprocessing, Postprocessor.Value!);
-
 	}
 
 	#endregion

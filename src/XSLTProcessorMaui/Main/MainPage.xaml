@@ -123,7 +123,7 @@
 					VerticalOptions="Fill"/>
 
 				<!-- Output file. -->
-				<!--<Label
+				<Label
 					Grid.Row="9" Grid.Column="0"
 					Text="Output File" StyleClass="TitleLabel"/>
 				<Entry
@@ -137,40 +137,60 @@
 					</Entry.Behaviors>
 				</Entry>
 				<Label
-					Grid.Row="8" Grid.Column="0"
+					Grid.Row="11" Grid.Column="0"
 					Text="{Binding OutputFile.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
 					StyleClass="InvalidLabelStyle"/>
-				<Button
-					Grid.Row="7" Grid.Column="1"
+				<!--<Button
+					Grid.Row="10" Grid.Column="1"
 					Text="Clear"
 					SemanticProperties.Hint="Browse for the output file."
 					Clicked="OnBrowseForOutputFile"
 					HorizontalOptions="Center"
 					VerticalOptions="Fill"/>-->
 
-
+				<!-- Output directory. -->
+				<Label
+					Grid.Row="12" Grid.Column="0"
+					Text="Output Directory" StyleClass="TitleLabel"/>
+				<Entry
+					Grid.Row="13" Grid.Column="0"
+					x:Name="OutputDirectoryEntry"
+					Placeholder="Output Directory"
+					Text="{Binding OutputDirectory.Value}"
+					HorizontalOptions="FillAndExpand">
+					<Entry.Behaviors>
+						<toolkit:EventToCommandBehavior Command="{Binding ValidateOutputDirectoryCommand}" EventName="TextChanged"/>
+					</Entry.Behaviors>
+				</Entry>
+				<Label
+					Grid.Row="14" Grid.Column="0"
+					Text="{Binding OutputDirectory.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
+					StyleClass="InvalidLabelStyle"/>
+				<Button
+					Grid.Row="13" Grid.Column="1"
+					Text="Browse"
+					SemanticProperties.Hint="Browse for the output directory."
+					Clicked="OnBrowseForOutputDirectory"
+					HorizontalOptions="Center"
+					VerticalOptions="Fill"/>
 			</Grid>
-			
-			
-			
 			
 
 			<!-- Post Processing -->
             <Label
+				Margin="0,30,0,0"
                 Text="Post Processing"
                 Style="{StaticResource SubHeadline}"
                 SemanticProperties.HeadingLevel="Level2"/>
-            <BoxView Style="{StaticResource HorizontalBoarder}"/>
-
+			<BoxView Style="{StaticResource HorizontalBoarder}"/>
 
 			<Grid
-				Grid.Row="1"
-				RowDefinitions="Auto,Auto,25,Auto,Auto,25,Auto,Auto,25,Auto,Auto,25,Auto,Auto,17"
+				RowDefinitions="Auto,Auto,17"
 				RowSpacing="0"
 				ColumnDefinitions="*,100"
 				ColumnSpacing="8">
 				<!-- The checkbox seems to fudge the spacing hard.  A forced hack of a fix is used. -->
-				<VerticalStackLayout Grid.Row="0" Grid.Column="0" Padding="0" Spacing="0" VerticalOptions="Center">
+				<VerticalStackLayout Grid.Row="0" Grid.Column="0" Padding="0" Margin="0,6,0,0" Spacing="0" VerticalOptions="Center">
 					<!-- Force the height to be smaller than it wants to be to take up the unwanted spacing. -->
 					<HorizontalStackLayout Padding="0" Spacing="0" VerticalOptions="Center" HeightRequest="22">
 						<CheckBox
@@ -183,38 +203,41 @@
 					<HorizontalStackLayout  Padding="0" Spacing="0" HeightRequest="8"/>
 				</VerticalStackLayout>
 				<Entry
-						Grid.Row="1" Grid.Column="0"
-						x:Name="PostprocessorEntry"
-						Placeholder="Postprocessor"
-						Text="{Binding Postprocessor.Value}"
-						HorizontalOptions="FillAndExpand"
-						IsEnabled="{Binding RunPostprocessing}">
+					Grid.Row="1" Grid.Column="0"
+					x:Name="PostprocessorEntry"
+					Placeholder="Postprocessor"
+					Text="{Binding Postprocessor.Value}"
+					HorizontalOptions="FillAndExpand"
+					IsEnabled="{Binding RunPostprocessing}">
 					<Entry.Behaviors>
-						<toolkit:EventToCommandBehavior Command="{Binding ValidateOutputFileCommand}" EventName="TextChanged"/>
+						<toolkit:EventToCommandBehavior Command="{Binding ValidatePostprocessorCommand}" EventName="TextChanged"/>
 					</Entry.Behaviors>
 				</Entry>
-				<!--<Label
-						Grid.Row="8" Grid.Column="0"
-						Text="{Binding PostProcessor.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
-						StyleClass="InvalidLabelStyle"/>-->
+				<Label
+					Grid.Row="2" Grid.Column="0"
+					Text="{Binding Postprocessor.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
+					StyleClass="InvalidLabelStyle"/>
 				<Button
-						Grid.Row="1" Grid.Column="1"
-						Text="Browse"
-						SemanticProperties.Hint="Browse for the postprocessing file."
-						Clicked="OnBrowseForPostProcessor"
-						HorizontalOptions="Center"
-						VerticalOptions="Fill"
-						IsEnabled="{Binding RunPostprocessing}"/>
+					Grid.Row="1" Grid.Column="1"
+					Text="Browse"
+					SemanticProperties.Hint="Browse for the postprocessing file."
+					Clicked="OnBrowseForPostProcessor"
+					HorizontalOptions="Center"
+					VerticalOptions="Fill"
+					IsEnabled="{Binding RunPostprocessing}"/>
 			</Grid>
 
 
 			<!-- Bottom Buttons -->
-            <HorizontalStackLayout StyleClass="BottomButtonRowStyle">
+			<!--<BoxView Style="{StaticResource HorizontalBoarder}"/>-->
+            <HorizontalStackLayout
+				Margin="0,30,0,0"
+				StyleClass="BottomButtonRowStyle">
                 <Button 
 					Text="Process"
 					HorizontalOptions="End"
 					IsEnabled="{Binding IsSubmittable}"
-					Command="{Binding ProcessCommand}"/>
+					Clicked="OnProcessButtonClicked"/>
                 <Button 
 					Text="Close"
 					HorizontalOptions="End"
