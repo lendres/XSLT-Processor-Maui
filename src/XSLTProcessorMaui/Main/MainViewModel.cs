@@ -49,7 +49,7 @@ public partial class MainViewModel : ObservableObject
 		XmlInputFile.Value		= Preferences.XmlInputFile;
 		XsltFile.Value			= Preferences.XsltFile;
 		XsltArguments.Value		= Preferences.XsltArguments;
-		OutputFile.Value		= Preferences.OutputFile;
+		OutputFileFullPath		= Preferences.OutputFile;
 		RunPostprocessing		= Preferences.RunPostprocessor;
 		Postprocessor.Value		= Preferences.Postprocessor;
 	}
@@ -79,7 +79,16 @@ public partial class MainViewModel : ObservableObject
 	#region Properties
 	public ProcessingResult ProcessingResult { get; set; } = new();
 
-	public string OutputFileFullPath { get => Path.Combine(OutputDirectory.Value!, OutputFile.Value!); }
+	public string OutputFileFullPath
+	{
+		get => Path.Combine(OutputDirectory.Value!.Trim(), OutputFile.Value!.Trim());
+
+		set
+		{
+			OutputFile.Value		= Path.GetFileName(value);
+			OutputDirectory.Value	= Path.GetDirectoryName(value);
+		}
+	}
 
 	#endregion
 
@@ -148,7 +157,7 @@ public partial class MainViewModel : ObservableObject
 
 	#endregion
 
-	#region Commands
+	#region Methods and Commands
 
 	[RelayCommand]
 	private void ClearXsltArguments()
@@ -161,16 +170,15 @@ public partial class MainViewModel : ObservableObject
 		Preferences.XmlInputFile		= XmlInputFile.Value!.Trim();
 		Preferences.XsltFile			= XsltFile.Value!.Trim();
 		Preferences.XsltArguments		= XsltArguments.Value!.Trim();
-		Preferences.OutputFile			= OutputFile.Value!.Trim();
+		Preferences.OutputFile			= OutputFileFullPath;
 		Preferences.RunPostprocessor	= RunPostprocessing;
 		Preferences.Postprocessor		= Postprocessor.Value!.Trim();
 	}
 
-	[RelayCommand]
-	private void Process()
+	public ProcessingResult Process()
 	{
 		SaveSettings();
-		ProcessingResult = XsltProcessor.Transform(XmlInputFile.Value!, XsltFile.Value!, XsltArguments.Value!, OutputFile.Value!, RunPostprocessing, Postprocessor.Value!);
+		return XsltProcessor.Transform(XmlInputFile.Value!, XsltFile.Value!, XsltArguments.Value!, OutputFileFullPath, RunPostprocessing, Postprocessor.Value!);
 	}
 
 	#endregion

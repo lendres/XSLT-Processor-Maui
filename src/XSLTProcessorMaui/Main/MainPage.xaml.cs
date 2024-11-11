@@ -71,7 +71,6 @@ public partial class MainPage : DigitalProductionMainPage
 
 	public static async Task<FileResult?> BrowseForFile(PickOptions options)
 	{
-		
 		try
 		{
 			return await FilePicker.PickAsync(options);
@@ -82,7 +81,6 @@ public partial class MainPage : DigitalProductionMainPage
 			//string message = exception.Message;
 			// The user canceled or something went wrong.
 		}
-
 		return null;
 	}
 
@@ -96,5 +94,9 @@ public partial class MainPage : DigitalProductionMainPage
 			await DisplayAlert("Error", "The output file is not writable.  The file may be open by another application.  Please resolve the situation or choose another file name.", "Ok");
 			return;
 		}
+
+		ProcessingResult processingResult = viewModel.Process();
+
+		await DisplayAlert("Processing Result", processingResult.Message, "Ok");
 	}
 }

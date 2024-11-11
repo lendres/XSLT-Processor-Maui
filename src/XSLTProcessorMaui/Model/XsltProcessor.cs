@@ -45,8 +45,8 @@ public static class XsltProcessor
 			{
 				ProcessStartInfo startinfo = new()
 				{
-					FileName          = System.IO.Path.GetFileName(postprocessor),
-					WorkingDirectory  = System.IO.Path.GetDirectoryName(postprocessor)
+					FileName          = postprocessor,
+					WorkingDirectory  = Path.GetDirectoryName(postprocessor)
 				};
 				//startinfo.Arguments			= "";
 
@@ -61,6 +61,7 @@ public static class XsltProcessor
 
 		// No errors.
 		result.Success = true;
+		result.Message = "The processing completed successfully.";
 		return result;
 	}
 
@@ -97,7 +98,7 @@ public static class XsltProcessor
 
 			if (splitArgumentLine.Length != 3)
 			{
-				throw new Exception("Invalid argument specified.");
+				throw new Exception("Invalid XSLT argument specified.");
 			}
 
 			argumentList.AddParam(splitArgumentLine[0], splitArgumentLine[1], splitArgumentLine[2]);

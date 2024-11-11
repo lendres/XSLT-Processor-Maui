@@ -35,7 +35,7 @@ public static class Preferences
 	}
 
 	/// <summary>
-	/// Output file location.
+	/// Output file name.
 	/// </summary>
 	public static string OutputFile
 	{
