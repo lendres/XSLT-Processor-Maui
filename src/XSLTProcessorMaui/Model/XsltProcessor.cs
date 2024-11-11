@@ -12,7 +12,19 @@ public static class XsltProcessor
 	/// </summary>
 	/// <param name="inputFile">Input (XML) file.</param>
 	/// <param name="xsltFile">Transformation (XSLT) file.</param>
-	/// <param name="outputFile">Output file.</param>
+	/// <param name="xsltArguments">
+	/// Arguments passed to the XSLT processor.
+	/// Each set of arguments should be separated by a semicolon.  Each parameter has three parts, separated by a comma:
+	/// name, namespaceUri, parameter
+	/// So the string:
+	/// foo,,bar;usegeneric,,no
+	/// Gets turned into two parameters:
+	/// foo=bar
+	/// usegeneric=no
+	/// </param>
+	/// <param name="outputFile">Output file full path.</param>
+	/// <param name="runPostprocessor">If true, the postprocessing will be run.</param>
+	/// <param name="postprocessor">Postprocessing command to run.  This should be something that can run stand alone, e.g. a batch file or executable.</param>
 	public static ProcessingResult Transform(string inputFile, string xsltFile, string xsltArguments, string outputFile, bool runPostprocessor, string postprocessor)
 	{
 		ProcessingResult result = new();
@@ -65,7 +77,6 @@ public static class XsltProcessor
 		return result;
 	}
 
-
 	/// <summary>
 	/// Splits the string in the argument list textbox into a set of arguments to pass to the XSLT processor.
 	/// </summary>
@@ -85,9 +96,9 @@ public static class XsltProcessor
 		// Each set of arguments should be separated by a semicolon.  Each parameter has three parts, separated by a comma:
 		// name, namespaceUri, parameter
 		// So the string:
-		// projectlocation,,afterexperience;usegeneric,,no
+		// foo,,bar;usegeneric,,no
 		// Gets turned into two parameters:
-		// projectlocation=afterexperience
+		// foo=bar
 		// usegeneric=no
 		string[] splitArguments = arguments.Split(';');
 
