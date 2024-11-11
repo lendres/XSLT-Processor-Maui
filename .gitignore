@@ -53,3 +53,4 @@ TestResults/
 *.user
 src/.vs/
 Archive/
+src/XSLTProcessorMaui/Testing Files/output.html
