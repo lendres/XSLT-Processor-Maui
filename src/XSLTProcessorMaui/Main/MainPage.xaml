@@ -47,7 +47,7 @@
                 <!-- XML input file. -->
 				<Label
 					Grid.Row="0" Grid.Column="0"
-					Text="XML Input File" StyleClass="TitleLabel"/>
+					Text="XML Input File" StyleClass="ControlLabel"/>
 				<Entry
 					Grid.Row="1" Grid.Column="0"
 					x:Name="XmlInputFileEntry"
@@ -73,7 +73,7 @@
 				<!-- XSLT file. -->
 				<Label
 					Grid.Row="3" Grid.Column="0"
-					Text="XSLT File" StyleClass="TitleLabel"/>
+					Text="XSLT File" StyleClass="ControlLabel"/>
 				<Entry
 					Grid.Row="4" Grid.Column="0"
 					x:Name="XsltFileEntry"
@@ -99,7 +99,7 @@
 				<!-- XSLT arguments. -->
 				<Label
 					Grid.Row="6" Grid.Column="0"
-					Text="XSLT Arguments" StyleClass="TitleLabel"/>
+					Text="XSLT Arguments" StyleClass="ControlLabel"/>
 				<Entry
 					Grid.Row="7" Grid.Column="0"
 					x:Name="XsltArgumentsEntry"
@@ -125,7 +125,7 @@
 				<!-- Output file. -->
 				<Label
 					Grid.Row="9" Grid.Column="0"
-					Text="Output File" StyleClass="TitleLabel"/>
+					Text="Output File" StyleClass="ControlLabel"/>
 				<Entry
 					Grid.Row="10" Grid.Column="0"
 					x:Name="OutputFileEntry"
@@ -151,7 +151,7 @@
 				<!-- Output directory. -->
 				<Label
 					Grid.Row="12" Grid.Column="0"
-					Text="Output Directory" StyleClass="TitleLabel"/>
+					Text="Output Directory" StyleClass="ControlLabel"/>
 				<Entry
 					Grid.Row="13" Grid.Column="0"
 					x:Name="OutputDirectoryEntry"

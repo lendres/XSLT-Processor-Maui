@@ -482,8 +482,8 @@
 		<Setter Property="HorizontalOptions" Value="Start"/>
 		<Setter Property="VerticalOptions" Value="Start"/>
 	</Style>
-	<Style TargetType="Label" Class="TitleLabel" BasedOn="{StaticResource SmallLabelBase}">
-		<Setter Property="TextColor" Value="{StaticResource ControlTitleLight}"/>
+	<Style TargetType="Label" Class="ControlLabel" BasedOn="{StaticResource SmallLabelBase}">
+		<Setter Property="TextColor" Value="{StaticResource Gray400}"/>
 		<Setter Property="FontSize" Value="14"/>
 	</Style>
 	<Style TargetType="Label" Class="InvalidLabelStyle" BasedOn="{StaticResource SmallLabelBase}">
