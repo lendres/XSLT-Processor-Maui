@@ -231,7 +231,7 @@
 			<!-- Bottom Buttons -->
 			<!--<BoxView Style="{StaticResource HorizontalBoarder}"/>-->
             <HorizontalStackLayout
-				Margin="0,30,0,0"
+				Margin="0,10,0,0"
 				StyleClass="BottomButtonRowStyle">
                 <Button 
 					Text="Process"
