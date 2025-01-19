@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DigitalProduction.Interface;
-using DigitalProduction.Validation;
+using DigitalProduction.Maui.Validation;
 
 namespace XSLTProcessorMaui.ViewModels;
 

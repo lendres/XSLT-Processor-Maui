@@ -1,4 +1,4 @@
-﻿using GotDotNet.XInclude;
+﻿using DigitalProduction.Xml.XInclude;
 using System.Diagnostics;
 using System.Xml.XPath;
 using System.Xml.Xsl;
