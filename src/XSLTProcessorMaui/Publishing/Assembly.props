@@ -22,13 +22,13 @@
 
 	<ItemGroup>
 		<AssemblyAttribute Include="DigitalProduction.Reflection.IssuesAddressAttribute">
-			<_Parameter1>https://github.com/lendres/XSLT-Processor-Maui</_Parameter1>
+			<_Parameter1>https://github.com/lendres/XSLT-Processor-Maui/issues</_Parameter1>
 		</AssemblyAttribute>
 	</ItemGroup>
 
 	<ItemGroup>
 		<AssemblyAttribute Include="DigitalProduction.Reflection.DocumentationAddressAttribute">
-			<_Parameter1>https://github.com/lendres/XSLT-Processor-Maui</_Parameter1>
+			<_Parameter1>https://github.com/lendres/XSLT-Processor-Maui/wiki</_Parameter1>
 		</AssemblyAttribute>
 	</ItemGroup>
 </Project>
