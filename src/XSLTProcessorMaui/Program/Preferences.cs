@@ -35,11 +35,11 @@ public static class Preferences
 	}
 
 	/// <summary>
-	/// Output file location.
+	/// Output file name.
 	/// </summary>
 	public static string OutputFile
 	{
-		get => Microsoft.Maui.Storage.Preferences.Default.Get("Output File", "Output.xml");
+		get => Microsoft.Maui.Storage.Preferences.Default.Get("Output File", "");
 		set => Microsoft.Maui.Storage.Preferences.Default.Set("Output File", value);
 	}
 

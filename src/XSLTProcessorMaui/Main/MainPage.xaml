@@ -1,0 +1,271 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<dptkcontrols:DigitalProductionMainPage
+	xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:system="clr-namespace:System;assembly=mscorlib"
+	xmlns:dptkcontrols="clr-namespace:DigitalProduction.Maui.Controls;assembly=DigitalProduction.Maui.AppToolkit"
+	xmlns:dpconverters="clr-namespace:DigitalProduction.Maui.Converters;assembly=DigitalProduction.Maui.AppToolkit"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+	xmlns:viewmodel="clr-namespace:XSLTProcessorMaui.ViewModels"
+	x:DataType="viewmodel:MainViewModel"
+	x:Class="XSLTProcessorMaui.MainPage">
+
+	<ContentPage.BindingContext>
+		<viewmodel:MainViewModel/>
+	</ContentPage.BindingContext>
+
+	<ContentPage.MenuBarItems>
+		<MenuBarItem Text="File">
+			<MenuFlyoutItem Text="Exit" Clicked="OnExit"/>
+		</MenuBarItem>
+		<MenuBarItem Text="Help">
+			<MenuFlyoutItem Text="About" Clicked="OnAbout"/>
+		</MenuBarItem>
+	</ContentPage.MenuBarItems>
+
+	<ContentPage.Resources>
+		<toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter"/>
+		<dpconverters:FirstValidationErrorConverter x:Key="FirstValidationErrorConverter"/>
+	</ContentPage.Resources>
+
+	<ScrollView>
+        <VerticalStackLayout Padding="30,0" Spacing="0">
+
+			<!-- XSLT Processing -->
+            <Label
+                Text="XSLT Processing"
+                Style="{StaticResource SubHeadline}"
+                SemanticProperties.HeadingLevel="Level2"/>
+            <BoxView Style="{StaticResource HorizontalBoarder}"/>
+
+            <Grid
+				Grid.Row="1"
+				RowDefinitions="Auto,Auto,25,Auto,Auto,25,Auto,Auto,25,Auto,Auto,25,Auto,Auto,17"
+				RowSpacing="0"
+				ColumnDefinitions="*,100"
+				ColumnSpacing="8">
+				
+                <!-- XML input file. -->
+				<Label
+					Grid.Row="0" Grid.Column="0"
+					Text="XML Input File" StyleClass="ControlLabel"/>
+				<Entry
+					Grid.Row="1" Grid.Column="0"
+					x:Name="XmlInputFileEntry"
+					Placeholder="XML File"
+					Text="{Binding XmlInputFile.Value}"
+					HorizontalOptions="FillAndExpand">
+                    <Entry.Behaviors>
+						<toolkit:EventToCommandBehavior
+                            x:TypeArguments="system:EventArgs"
+							Command="{Binding ValidateXmlInputFileCommand}"
+                            BindingContext="{Binding Path=BindingContext, Source={x:Reference XmlInputFileEntry}, x:DataType=Entry}"
+							EventName="TextChanged"/>
+                    </Entry.Behaviors>
+                </Entry>
+                <Label
+					Grid.Row="2" Grid.Column="0"
+					Text="{Binding XmlInputFile.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
+					StyleClass="InvalidLabelStyle"/>
+                <Button
+					Grid.Row="1" Grid.Column="1"
+					Text="Browse"
+					SemanticProperties.Hint="Browse for the XML file."
+					Clicked="OnBrowseForXmlInputFile"
+					HorizontalOptions="Center"
+					VerticalOptions="Fill"/>
+
+				<!-- XSLT file. -->
+				<Label
+					Grid.Row="3" Grid.Column="0"
+					Text="XSLT File" StyleClass="ControlLabel"/>
+				<Entry
+					Grid.Row="4" Grid.Column="0"
+					x:Name="XsltFileEntry"
+					Placeholder="XSLT File"
+					Text="{Binding XsltFile.Value}"
+					HorizontalOptions="FillAndExpand">
+					<Entry.Behaviors>
+						<toolkit:EventToCommandBehavior
+                            x:TypeArguments="system:EventArgs"
+							Command="{Binding ValidateXsltFileCommand}"
+                            BindingContext="{Binding Path=BindingContext, Source={x:Reference XsltFileEntry}, x:DataType=Entry}"
+							EventName="TextChanged"/>
+					</Entry.Behaviors>
+				</Entry>
+				<Label
+					Grid.Row="5" Grid.Column="0"
+					Text="{Binding XsltFile.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
+					StyleClass="InvalidLabelStyle"/>
+				<Button
+					Grid.Row="4" Grid.Column="1"
+					Text="Browse"
+					SemanticProperties.Hint="Browse for the XSLT file."
+					Clicked="OnBrowseForXsltFile"
+					HorizontalOptions="Center"
+					VerticalOptions="Fill"/>
+
+				<!-- XSLT arguments. -->
+				<Label
+					Grid.Row="6" Grid.Column="0"
+					Text="XSLT Arguments" StyleClass="ControlLabel"/>
+				<Entry
+					Grid.Row="7" Grid.Column="0"
+					x:Name="XsltArgumentsEntry"
+					Placeholder="XSLT Arguments"
+					Text="{Binding XsltArguments.Value}"
+					HorizontalOptions="FillAndExpand">
+					<!--<Entry.Behaviors>
+						<toolkit:EventToCommandBehavior Command="{Binding ValidateXsltArgumentsCommand}" EventName="TextChanged"/>
+					</Entry.Behaviors>-->
+				</Entry>
+				<!--<Label
+					Grid.Row="8" Grid.Column="0"
+					Text="{Binding XsltArguments.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
+					StyleClass="InvalidLabelStyle"/>-->
+				<Button
+					Grid.Row="7" Grid.Column="1"
+					Text="Clear"
+					SemanticProperties.Hint="Clear the XSLT arguments."
+					Command="{Binding ClearXsltArgumentsCommand}"
+					HorizontalOptions="Center"
+					VerticalOptions="Fill"/>
+
+				<!-- Output file. -->
+				<Label
+					Grid.Row="9" Grid.Column="0"
+					Text="Output File" StyleClass="ControlLabel"/>
+				<Entry
+					Grid.Row="10" Grid.Column="0"
+					x:Name="OutputFileEntry"
+					Placeholder="Output File"
+					Text="{Binding OutputFile.Value}"
+					HorizontalOptions="FillAndExpand">
+					<Entry.Behaviors>
+						<toolkit:EventToCommandBehavior
+                            x:TypeArguments="system:EventArgs"
+							Command="{Binding ValidateOutputFileCommand}"
+                            BindingContext="{Binding Path=BindingContext, Source={x:Reference OutputFileEntry}, x:DataType=Entry}"
+							EventName="TextChanged"/>
+					</Entry.Behaviors>
+				</Entry>
+				<Label
+					Grid.Row="11" Grid.Column="0"
+					Text="{Binding OutputFile.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
+					StyleClass="InvalidLabelStyle"/>
+				<!--<Button
+					Grid.Row="10" Grid.Column="1"
+					Text="Clear"
+					SemanticProperties.Hint="Browse for the output file."
+					Clicked="OnBrowseForOutputFile"
+					HorizontalOptions="Center"
+					VerticalOptions="Fill"/>-->
+
+				<!-- Output directory. -->
+				<Label
+					Grid.Row="12" Grid.Column="0"
+					Text="Output Directory" StyleClass="ControlLabel"/>
+				<Entry
+					Grid.Row="13" Grid.Column="0"
+					x:Name="OutputDirectoryEntry"
+					Placeholder="Output Directory"
+					Text="{Binding OutputDirectory.Value}"
+					HorizontalOptions="FillAndExpand">
+					<Entry.Behaviors>
+						<toolkit:EventToCommandBehavior
+                            x:TypeArguments="system:EventArgs"
+							Command="{Binding ValidateOutputDirectoryCommand}"
+                            BindingContext="{Binding Path=BindingContext, Source={x:Reference OutputDirectoryEntry}, x:DataType=Entry}"
+							EventName="TextChanged"/>
+					</Entry.Behaviors>
+				</Entry>
+				<Label
+					Grid.Row="14" Grid.Column="0"
+					Text="{Binding OutputDirectory.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
+					StyleClass="InvalidLabelStyle"/>
+				<Button
+					Grid.Row="13" Grid.Column="1"
+					Text="Browse"
+					SemanticProperties.Hint="Browse for the output directory."
+					Clicked="OnBrowseForOutputDirectory"
+					HorizontalOptions="Center"
+					VerticalOptions="Fill"/>
+			</Grid>
+			
+
+			<!-- Post Processing -->
+            <Label
+				Margin="0,30,0,0"
+                Text="Post Processing"
+                Style="{StaticResource SubHeadline}"
+                SemanticProperties.HeadingLevel="Level2"/>
+			<BoxView Style="{StaticResource HorizontalBoarder}"/>
+
+			<Grid
+				RowDefinitions="Auto,Auto,17"
+				RowSpacing="0"
+				ColumnDefinitions="*,100"
+				ColumnSpacing="8">
+				<!-- The checkbox seems to fudge the spacing hard.  A forced hack of a fix is used. -->
+				<VerticalStackLayout Grid.Row="0" Grid.Column="0" Padding="0" Margin="0,6,0,0" Spacing="0" VerticalOptions="Center">
+					<!-- Force the height to be smaller than it wants to be to take up the unwanted spacing. -->
+					<HorizontalStackLayout Padding="0" Spacing="0" VerticalOptions="Center" HeightRequest="22">
+						<CheckBox
+							IsChecked="{Binding RunPostprocessing}"
+							VerticalOptions="Center"/>
+						<!-- Enlarge the label so the desenders don't get cut off. -->
+						<Label Text="Run Postprocessing" VerticalOptions="Center" Margin="0" HeightRequest="25" Padding="0"/>
+					</HorizontalStackLayout>
+					<!-- Pad the bottom to provide spacing before the next element. -->
+					<HorizontalStackLayout  Padding="0" Spacing="0" HeightRequest="8"/>
+				</VerticalStackLayout>
+				<Entry
+					Grid.Row="1" Grid.Column="0"
+					x:Name="PostprocessorEntry"
+					Placeholder="Postprocessor"
+					Text="{Binding Postprocessor.Value}"
+					HorizontalOptions="FillAndExpand"
+					IsEnabled="{Binding RunPostprocessing}">
+					<Entry.Behaviors>
+						<toolkit:EventToCommandBehavior
+                            x:TypeArguments="system:EventArgs"
+							Command="{Binding ValidatePostprocessorCommand}"
+                            BindingContext="{Binding Path=BindingContext, Source={x:Reference PostprocessorEntry}, x:DataType=Entry}"
+							EventName="TextChanged"/>
+					</Entry.Behaviors>
+				</Entry>
+				<Label
+					Grid.Row="2" Grid.Column="0"
+					Text="{Binding Postprocessor.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
+					StyleClass="InvalidLabelStyle"/>
+				<Button
+					Grid.Row="1" Grid.Column="1"
+					Text="Browse"
+					SemanticProperties.Hint="Browse for the postprocessing file."
+					Clicked="OnBrowseForPostProcessor"
+					HorizontalOptions="Center"
+					VerticalOptions="Fill"
+					IsEnabled="{Binding RunPostprocessing}"/>
+			</Grid>
+
+
+			<!-- Bottom Buttons -->
+			<!--<BoxView Style="{StaticResource HorizontalBoarder}"/>-->
+            <HorizontalStackLayout
+				Margin="0,10,0,0"
+				StyleClass="BottomButtonRowStyle">
+                <Button 
+					Text="Process"
+					HorizontalOptions="End"
+					IsEnabled="{Binding IsSubmittable}"
+					Clicked="OnProcessButtonClicked"/>
+                <Button 
+					Text="Close"
+					HorizontalOptions="End"
+					Clicked="OnExit"/>
+            </HorizontalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</dptkcontrols:DigitalProductionMainPage>

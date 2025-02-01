@@ -1,10 +1,7 @@
-﻿using GotDotNet.XInclude;
-using System;
-using System.Collections.Generic;
+﻿
+using DigitalProduction.Xml.XInclude;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Xml;
 using System.Xml.XPath;
 using System.Xml.Xsl;
 
@@ -17,10 +14,27 @@ public static class XsltProcessor
 	/// </summary>
 	/// <param name="inputFile">Input (XML) file.</param>
 	/// <param name="xsltFile">Transformation (XSLT) file.</param>
-	/// <param name="outputFile">Output file.</param>
+	/// <param name="xsltArguments">
+	/// Arguments passed to the XSLT processor.
+	/// Each set of arguments should be separated by a semicolon.  Each parameter has three parts, separated by a comma:
+	/// name, namespaceUri, parameter
+	/// So the string:
+	/// foo,,bar;usegeneric,,no
+	/// Gets turned into two parameters:
+	/// foo=bar
+	/// usegeneric=no
+	/// </param>
+	/// <param name="outputFile">Output file full path.</param>
+	/// <param name="runPostprocessor">If true, the postprocessing will be run.</param>
+	/// <param name="postprocessor">Postprocessing command to run.  This should be something that can run stand alone, e.g. a batch file or executable.</param>
 	public static ProcessingResult Transform(string inputFile, string xsltFile, string xsltArguments, string outputFile, bool runPostprocessor, string postprocessor)
 	{
-		ProcessingResult result = new();
+		// Default to an error with a message.  If the processing is successful, the values will be overwritten.
+		ProcessingResult result = new()
+		{
+			Success = false,
+			Message = "Error running XSLT transformation.\n\n"
+		};
 
 		try
 		{
@@ -28,7 +42,8 @@ public static class XsltProcessor
 			XPathDocument xPathDocument         = new(xIncludingReader);
 
 			XslCompiledTransform xslTransform   = new(true);
-			xslTransform.Load(xsltFile);
+			XsltSettings settings = new(true, true);
+			xslTransform.Load(xsltFile, settings, new XmlUrlResolver());
 
 			XsltArgumentList xsltArgumentList   = GetArgumentList(xsltArguments);
 
@@ -37,21 +52,14 @@ public static class XsltProcessor
 
 			xIncludingReader.Close();
 			streamWriter.Close();
-		}
-		catch (Exception exception)
-		{
-			result.Message = "Error running XSLT transformation.\n\n" + exception.Message;
-			return result;
-		}
 
-		try
-		{
 			if (runPostprocessor)
 			{
+				result.Message = "Error running post processor.\n\n";
 				ProcessStartInfo startinfo = new()
 				{
-					FileName          = System.IO.Path.GetFileName(postprocessor),
-					WorkingDirectory  = System.IO.Path.GetDirectoryName(postprocessor)
+					FileName			= postprocessor,
+					WorkingDirectory	= Path.GetDirectoryName(postprocessor)
 				};
 				//startinfo.Arguments			= "";
 
@@ -60,15 +68,19 @@ public static class XsltProcessor
 		}
 		catch (Exception exception)
 		{
-			result.Message = "Error running post processor.\n\n" + exception.Message;
+			result.Message += exception.Message;
+			if (exception.InnerException != null && !exception.Message.Contains(exception.InnerException.Message))
+			{
+				result.Message += "\n\n" + exception.InnerException.Message;
+			}
 			return result;
 		}
 
 		// No errors.
 		result.Success = true;
+		result.Message = "The processing completed successfully.";
 		return result;
 	}
-
 
 	/// <summary>
 	/// Splits the string in the argument list textbox into a set of arguments to pass to the XSLT processor.
@@ -89,9 +101,9 @@ public static class XsltProcessor
 		// Each set of arguments should be separated by a semicolon.  Each parameter has three parts, separated by a comma:
 		// name, namespaceUri, parameter
 		// So the string:
-		// projectlocation,,afterexperience;usegeneric,,no
+		// foo,,bar;usegeneric,,no
 		// Gets turned into two parameters:
-		// projectlocation=afterexperience
+		// foo=bar
 		// usegeneric=no
 		string[] splitArguments = arguments.Split(';');
 
@@ -102,7 +114,7 @@ public static class XsltProcessor
 
 			if (splitArgumentLine.Length != 3)
 			{
-				throw new Exception("Invalid argument specified.");
+				throw new Exception("Invalid XSLT argument specified.");
 			}
 
 			argumentList.AddParam(splitArgumentLine[0], splitArgumentLine[1], splitArgumentLine[2]);
