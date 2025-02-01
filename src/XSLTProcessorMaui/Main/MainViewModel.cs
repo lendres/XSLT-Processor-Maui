@@ -8,31 +8,6 @@ namespace XSLTProcessorMaui.ViewModels;
 public partial class MainViewModel : ObservableObject
 {
 	#region Fields
-
-	[ObservableProperty]
-	private ValidatableObject<string>			_xmlInputFile					= new();
-
-	[ObservableProperty]
-	private ValidatableObject<string>			_xsltFile						= new();
-
-	[ObservableProperty]
-	private ValidatableObject<string>			_xsltArguments					= new();
-
-	[ObservableProperty]
-	private ValidatableObject<string>			_outputFile						= new();
-
-	[ObservableProperty]
-	private ValidatableObject<string>			_outputDirectory				= new();
-
-	[ObservableProperty]
-	private bool								_runPostprocessing				= false;
-
-	[ObservableProperty]
-	private ValidatableObject<string>			_postprocessor					= new();
-
-	[ObservableProperty]
-	private bool								_isSubmittable;
-
 	#endregion
 
 	#region Construction
@@ -77,6 +52,31 @@ public partial class MainViewModel : ObservableObject
 	#endregion
 
 	#region Properties
+
+	[ObservableProperty]
+	public partial ValidatableObject<string>			XmlInputFile { get; set; }					= new();
+
+	[ObservableProperty]
+	public partial ValidatableObject<string>			XsltFile { get; set; }						= new();
+
+	[ObservableProperty]
+	public partial ValidatableObject<string>			XsltArguments { get; set; }					= new();
+
+	[ObservableProperty]
+	public partial ValidatableObject<string>			OutputFile { get; set; }					= new();
+
+	[ObservableProperty]
+	public partial ValidatableObject<string>			OutputDirectory { get; set; }				= new();
+
+	[ObservableProperty]
+	public partial bool									RunPostprocessing { get; set; }				= false;
+
+	[ObservableProperty]
+	public partial ValidatableObject<string>			Postprocessor { get; set; }					= new();
+
+	[ObservableProperty]
+	public partial bool									IsSubmittable { get; set; }
+
 	public ProcessingResult ProcessingResult { get; set; } = new();
 
 	public string OutputFileFullPath

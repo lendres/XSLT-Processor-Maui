@@ -1,9 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<dpcontrols:DigitalProductionMainPage
+<dptkcontrols:DigitalProductionMainPage
 	xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-	xmlns:dpcontrols="clr-namespace:DigitalProduction.Maui.Controls;assembly=DigitalProduction.Maui"
-	xmlns:dpconverters="clr-namespace:DigitalProduction.Maui.Converters;assembly=DigitalProduction.Maui"
+    xmlns:system="clr-namespace:System;assembly=mscorlib"
+	xmlns:dptkcontrols="clr-namespace:DigitalProduction.Maui.Controls;assembly=DigitalProduction.Maui.AppToolkit"
+	xmlns:dpconverters="clr-namespace:DigitalProduction.Maui.Converters;assembly=DigitalProduction.Maui.AppToolkit"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
 	xmlns:viewmodel="clr-namespace:XSLTProcessorMaui.ViewModels"
 	x:DataType="viewmodel:MainViewModel"
@@ -55,7 +56,11 @@
 					Text="{Binding XmlInputFile.Value}"
 					HorizontalOptions="FillAndExpand">
                     <Entry.Behaviors>
-						<toolkit:EventToCommandBehavior Command="{Binding ValidateXmlInputFileCommand}" EventName="TextChanged"/>
+						<toolkit:EventToCommandBehavior
+                            x:TypeArguments="system:EventArgs"
+							Command="{Binding ValidateXmlInputFileCommand}"
+                            BindingContext="{Binding Path=BindingContext, Source={x:Reference XmlInputFileEntry}, x:DataType=Entry}"
+							EventName="TextChanged"/>
                     </Entry.Behaviors>
                 </Entry>
                 <Label
@@ -81,7 +86,11 @@
 					Text="{Binding XsltFile.Value}"
 					HorizontalOptions="FillAndExpand">
 					<Entry.Behaviors>
-						<toolkit:EventToCommandBehavior Command="{Binding ValidateXsltFileCommand}" EventName="TextChanged"/>
+						<toolkit:EventToCommandBehavior
+                            x:TypeArguments="system:EventArgs"
+							Command="{Binding ValidateXsltFileCommand}"
+                            BindingContext="{Binding Path=BindingContext, Source={x:Reference XsltFileEntry}, x:DataType=Entry}"
+							EventName="TextChanged"/>
 					</Entry.Behaviors>
 				</Entry>
 				<Label
@@ -133,7 +142,11 @@
 					Text="{Binding OutputFile.Value}"
 					HorizontalOptions="FillAndExpand">
 					<Entry.Behaviors>
-						<toolkit:EventToCommandBehavior Command="{Binding ValidateOutputFileCommand}" EventName="TextChanged"/>
+						<toolkit:EventToCommandBehavior
+                            x:TypeArguments="system:EventArgs"
+							Command="{Binding ValidateOutputFileCommand}"
+                            BindingContext="{Binding Path=BindingContext, Source={x:Reference OutputFileEntry}, x:DataType=Entry}"
+							EventName="TextChanged"/>
 					</Entry.Behaviors>
 				</Entry>
 				<Label
@@ -159,7 +172,11 @@
 					Text="{Binding OutputDirectory.Value}"
 					HorizontalOptions="FillAndExpand">
 					<Entry.Behaviors>
-						<toolkit:EventToCommandBehavior Command="{Binding ValidateOutputDirectoryCommand}" EventName="TextChanged"/>
+						<toolkit:EventToCommandBehavior
+                            x:TypeArguments="system:EventArgs"
+							Command="{Binding ValidateOutputDirectoryCommand}"
+                            BindingContext="{Binding Path=BindingContext, Source={x:Reference OutputDirectoryEntry}, x:DataType=Entry}"
+							EventName="TextChanged"/>
 					</Entry.Behaviors>
 				</Entry>
 				<Label
@@ -210,7 +227,11 @@
 					HorizontalOptions="FillAndExpand"
 					IsEnabled="{Binding RunPostprocessing}">
 					<Entry.Behaviors>
-						<toolkit:EventToCommandBehavior Command="{Binding ValidatePostprocessorCommand}" EventName="TextChanged"/>
+						<toolkit:EventToCommandBehavior
+                            x:TypeArguments="system:EventArgs"
+							Command="{Binding ValidatePostprocessorCommand}"
+                            BindingContext="{Binding Path=BindingContext, Source={x:Reference PostprocessorEntry}, x:DataType=Entry}"
+							EventName="TextChanged"/>
 					</Entry.Behaviors>
 				</Entry>
 				<Label
@@ -247,4 +268,4 @@
         </VerticalStackLayout>
     </ScrollView>
 
-</dpcontrols:DigitalProductionMainPage>
+</dptkcontrols:DigitalProductionMainPage>
