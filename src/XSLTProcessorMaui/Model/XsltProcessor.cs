@@ -1,5 +1,7 @@
-﻿using DigitalProduction.Xml.XInclude;
+﻿
+using DigitalProduction.Xml.XInclude;
 using System.Diagnostics;
+using System.Xml;
 using System.Xml.XPath;
 using System.Xml.Xsl;
 
@@ -27,7 +29,12 @@ public static class XsltProcessor
 	/// <param name="postprocessor">Postprocessing command to run.  This should be something that can run stand alone, e.g. a batch file or executable.</param>
 	public static ProcessingResult Transform(string inputFile, string xsltFile, string xsltArguments, string outputFile, bool runPostprocessor, string postprocessor)
 	{
-		ProcessingResult result = new();
+		// Default to an error with a message.  If the processing is successful, the values will be overwritten.
+		ProcessingResult result = new()
+		{
+			Success = false,
+			Message = "Error running XSLT transformation.\n\n"
+		};
 
 		try
 		{
@@ -35,7 +42,8 @@ public static class XsltProcessor
 			XPathDocument xPathDocument         = new(xIncludingReader);
 
 			XslCompiledTransform xslTransform   = new(true);
-			xslTransform.Load(xsltFile);
+			XsltSettings settings = new(true, true);
+			xslTransform.Load(xsltFile, settings, new XmlUrlResolver());
 
 			XsltArgumentList xsltArgumentList   = GetArgumentList(xsltArguments);
 
@@ -44,21 +52,14 @@ public static class XsltProcessor
 
 			xIncludingReader.Close();
 			streamWriter.Close();
-		}
-		catch (Exception exception)
-		{
-			result.Message = "Error running XSLT transformation.\n\n" + exception.Message;
-			return result;
-		}
 
-		try
-		{
 			if (runPostprocessor)
 			{
+				result.Message = "Error running post processor.\n\n";
 				ProcessStartInfo startinfo = new()
 				{
-					FileName          = postprocessor,
-					WorkingDirectory  = Path.GetDirectoryName(postprocessor)
+					FileName			= postprocessor,
+					WorkingDirectory	= Path.GetDirectoryName(postprocessor)
 				};
 				//startinfo.Arguments			= "";
 
@@ -67,7 +68,11 @@ public static class XsltProcessor
 		}
 		catch (Exception exception)
 		{
-			result.Message = "Error running post processor.\n\n" + exception.Message;
+			result.Message += exception.Message;
+			if (exception.InnerException != null && !exception.Message.Contains(exception.InnerException.Message))
+			{
+				result.Message += "\n\n" + exception.InnerException.Message;
+			}
 			return result;
 		}
 
