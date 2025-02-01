@@ -7,13 +7,11 @@ public partial class App : Application
 	public App()
 	{
 		InitializeComponent();
-
-		MainPage = new AppShell();
 	}
 
 	protected override Window CreateWindow(IActivationState? activationState)
 	{
-		Window = new Window(MainPage!);   
+		Window = new Window(new AppShell());   
 		return Window;
 	}
 }

@@ -1,8 +1,8 @@
 ﻿using CommunityToolkit.Maui.Storage;
 using CommunityToolkit.Maui.Views;
-using DigitalProduction.Controls;
-using DigitalProduction.ViewModels;
-using DigitalProduction.Views;
+using DigitalProduction.Maui.Controls;
+using DigitalProduction.Maui.ViewModels;
+using DigitalProduction.Maui.Views;
 using XSLTProcessorMaui.ViewModels;
 
 namespace XSLTProcessorMaui;
@@ -36,7 +36,7 @@ public partial class MainPage : DigitalProductionMainPage
 		PickOptions pickOptions = new()
 		{
 			PickerTitle = "Select an XML File",
-			FileTypes   = DigitalProduction.IO.FileTypes.Xml
+			FileTypes   = DigitalProduction.Maui.IO.FileTypes.Xml
 		};
 		FileResult? result = await BrowseForFile(pickOptions);
 		if (result != null)
@@ -50,7 +50,7 @@ public partial class MainPage : DigitalProductionMainPage
 		PickOptions pickOptions = new()
 		{
 			PickerTitle = "Select an XML File",
-			FileTypes   = DigitalProduction.IO.FileTypes.Xslt
+			FileTypes   = DigitalProduction.Maui.IO.FileTypes.Xslt
 		};
 		FileResult? result = await BrowseForFile(pickOptions);
 		if (result != null)
