@@ -34,9 +34,8 @@
 			<!-- XSLT Processing -->
             <Label
                 Text="XSLT Processing"
-                Style="{StaticResource SubHeadline}"
-                SemanticProperties.HeadingLevel="Level2"/>
-            <BoxView Style="{StaticResource HorizontalBoarder}"/>
+				StyleClass="DivisionHeader"/>
+			<BoxView Style="{StaticResource HorizontalBoarder}" StyleClass="DivisionBorder"/>
 
             <Grid
 				Grid.Row="1"
@@ -197,9 +196,8 @@
             <Label
 				Margin="0,30,0,0"
                 Text="Post Processing"
-                Style="{StaticResource SubHeadline}"
-                SemanticProperties.HeadingLevel="Level2"/>
-			<BoxView Style="{StaticResource HorizontalBoarder}"/>
+                StyleClass="DivisionHeader"/>
+			<BoxView Style="{StaticResource HorizontalBoarder}" StyleClass="DivisionBorder"/>
 
 			<Grid
 				RowDefinitions="Auto,Auto,17"
