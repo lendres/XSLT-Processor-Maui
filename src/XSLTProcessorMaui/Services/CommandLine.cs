@@ -3,7 +3,7 @@
 namespace XSLTProcessorMaui;
 
 [CommandLineManager(ApplicationName = "XSLT Transformer", Copyright = "Copyright (c) Lance A. Endres.")]
-internal class CommandLine
+public class CommandLine : ICommandLine
 {
 	#region Properties
 
@@ -11,37 +11,37 @@ internal class CommandLine
 	/// The XML file the is the source material.
 	/// </summary>
 	[CommandLineOption(Name = "inputfile", Description = "XML file that is the source material.")]
-	public string InputFile { get; set; } = string.Empty;
+	public string? InputFile { get; set; } = null;
 
 	/// <summary>
 	/// The transformation sheet.
 	/// </summary>
 	[CommandLineOption(Name = "xsltfile", Description = "XSLT file.")]
-	public string XsltFile { get; set; } = string.Empty;
+	public string? XsltFile { get; set; } = null;
 
 	/// <summary>
 	/// The transformation sheet.
 	/// </summary>
 	[CommandLineOption(Name = "xsltargs", Description = "XSLT arguments.")]
-	public string XsltArguments { get; set; } = string.Empty;
+	public string? XsltArguments { get; set; } = null;
 
 	/// <summary>
 	/// Output (destination) file.
 	/// </summary>
 	[CommandLineOption(Name = "outputfile", Description = "Where the output is written to.")]
-	public string OutputFile { get; set; } = string.Empty;
+	public string? OutputFile { get; set; } = null;
 
 	/// <summary>
 	/// Output (destination) file.
 	/// </summary>
 	[CommandLineOption(Name = "runpostprocessor", BoolFunction = BoolFunction.TrueIfPresent, Description = "Specifies if the post processor should be run.")]
-	public bool RunPostProcessor { get; set; } = false;
+	public bool? RunPostProcessor { get; set; } = null;
 
 	/// <summary>
 	/// Output (destination) file.
 	/// </summary>
 	[CommandLineOption(Name = "postprocessor", Description = "Post processing routine to run after XSLT transformation is completed.")]
-	public string PostProcessor { get; set; } = string.Empty;
+	public string? PostProcessor { get; set; } = null;
 
 	#endregion
 

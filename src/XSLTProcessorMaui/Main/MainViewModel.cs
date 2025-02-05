@@ -1,19 +1,23 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using DigitalProduction.Interface;
 using DigitalProduction.Maui.Validation;
 
-namespace XSLTProcessorMaui.ViewModels;
+namespace XSLTProcessorMaui;
 
 public partial class MainViewModel : ObservableObject
 {
 	#region Fields
+
+	private ICommandLine _commandLineArguments;
+
 	#endregion
 
 	#region Construction
 
-	public MainViewModel()
+	public MainViewModel(ICommandLine commandLineArguments)
     {
+		_commandLineArguments = commandLineArguments;
+
 		InitializeValues();
 		AddValidations();
 		ValidateSubmittable();
@@ -21,25 +25,27 @@ public partial class MainViewModel : ObservableObject
 
 	private void InitializeValues()
 	{
-		XmlInputFile.Value		= Preferences.XmlInputFile;
-		XsltFile.Value			= Preferences.XsltFile;
-		XsltArguments.Value		= Preferences.XsltArguments;
-		OutputFileFullPath		= Preferences.OutputFile;
-		RunPostprocessing		= Preferences.RunPostprocessor;
-		Postprocessor.Value		= Preferences.Postprocessor;
+		_commandLineArguments.ParseCommandLine();
+
+		XmlInputFile.Value		= _commandLineArguments.InputFile			?? Preferences.XmlInputFile;
+		XsltFile.Value			= _commandLineArguments.XsltFile			?? Preferences.XsltFile;
+		XsltArguments.Value		= _commandLineArguments.XsltArguments		?? Preferences.XsltArguments;
+		OutputFileFullPath		= _commandLineArguments.OutputFile			?? Preferences.OutputFile;
+		RunPostprocessing		= _commandLineArguments.RunPostProcessor	?? Preferences.RunPostprocessor;
+		Postprocessor.Value		= _commandLineArguments.PostProcessor		?? Preferences.Postprocessor;
 	}
 
 	private void AddValidations()
 	{
-		XmlInputFile.Validations.Add(new IsNotNullOrEmptyRule	{ ValidationMessage = "A file name is required." });
-		XmlInputFile.Validations.Add(new FileExistsRule			{ ValidationMessage = "The file does not exist." });
+		XmlInputFile.Validations.Add(new IsNotNullOrEmptyRule		{ ValidationMessage = "A file name is required." });
+		XmlInputFile.Validations.Add(new FileExistsRule				{ ValidationMessage = "The file does not exist." });
 		XmlInputFile.Validate();
 
-		XsltFile.Validations.Add(new IsNotNullOrEmptyRule	{ ValidationMessage = "A file name is required." });
-		XsltFile.Validations.Add(new FileExistsRule			{ ValidationMessage = "The file does not exist." });
+		XsltFile.Validations.Add(new IsNotNullOrEmptyRule			{ ValidationMessage = "A file name is required." });
+		XsltFile.Validations.Add(new FileExistsRule					{ ValidationMessage = "The file does not exist." });
 		XsltFile.Validate();
 
-		OutputFile.Validations.Add(new IsNotNullOrEmptyRule { ValidationMessage = "A file name is required." });
+		OutputFile.Validations.Add(new IsNotNullOrEmptyRule			{ ValidationMessage = "A file name is required." });
 		OutputFile.Validate();
 
 		OutputDirectory.Validations.Add(new IsNotNullOrEmptyRule	{ ValidationMessage = "A directory is required." });

@@ -6,13 +6,9 @@
 	xmlns:dptkcontrols="clr-namespace:DigitalProduction.Maui.Controls;assembly=DigitalProduction.Maui.AppToolkit"
 	xmlns:dpconverters="clr-namespace:DigitalProduction.Maui.Converters;assembly=DigitalProduction.Maui.AppToolkit"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-	xmlns:viewmodel="clr-namespace:XSLTProcessorMaui.ViewModels"
+	xmlns:viewmodel="clr-namespace:XSLTProcessorMaui"
 	x:DataType="viewmodel:MainViewModel"
 	x:Class="XSLTProcessorMaui.MainPage">
-
-	<ContentPage.BindingContext>
-		<viewmodel:MainViewModel/>
-	</ContentPage.BindingContext>
 
 	<ContentPage.MenuBarItems>
 		<MenuBarItem Text="File">
@@ -28,7 +24,7 @@
 		<dpconverters:FirstValidationErrorConverter x:Key="FirstValidationErrorConverter"/>
 	</ContentPage.Resources>
 
-	<ScrollView>
+
         <VerticalStackLayout Padding="30,0" Spacing="0">
 
 			<!-- XSLT Processing -->
@@ -38,7 +34,6 @@
 			<BoxView Style="{StaticResource HorizontalBoarder}" StyleClass="DivisionBorder"/>
 
             <Grid
-				Grid.Row="1"
 				RowDefinitions="Auto,Auto,25,Auto,Auto,25,Auto,Auto,25,Auto,Auto,25,Auto,Auto,17"
 				RowSpacing="0"
 				ColumnDefinitions="*,100"
@@ -246,11 +241,12 @@
 					IsEnabled="{Binding RunPostprocessing}"/>
 			</Grid>
 
+			<BoxView Style="{StaticResource HorizontalBoarder}" StyleClass="DivisionBorder"/>
 
 			<!-- Bottom Buttons -->
 			<!--<BoxView Style="{StaticResource HorizontalBoarder}"/>-->
             <HorizontalStackLayout
-				Margin="0,10,0,0"
+				Margin="0,20,0,20"
 				StyleClass="BottomButtonRowStyle">
                 <Button 
 					Text="Process"
@@ -264,6 +260,6 @@
             </HorizontalStackLayout>
 
         </VerticalStackLayout>
-    </ScrollView>
+
 
 </dptkcontrols:DigitalProductionMainPage>

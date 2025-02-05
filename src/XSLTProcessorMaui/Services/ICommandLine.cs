@@ -1,36 +1,36 @@
 ﻿namespace XSLTProcessorMaui;
 
-internal interface ICommandLine
+public interface ICommandLine
 {
 	/// <summary>
 	/// The XML file the is the source material.
 	/// </summary>
-	public string InputFile { get; set; }
+	public string? InputFile { get; set; }
 
 	/// <summary>
 	/// The transformation sheet.
 	/// </summary>
-	public string XsltFile { get; set; }
+	public string? XsltFile { get; set; }
 
 	/// <summary>
 	/// The transformation sheet.
 	/// </summary>
-	public string XsltArguments { get; set; }
+	public string? XsltArguments { get; set; }
 
 	/// <summary>
 	/// Output (destination) file.
 	/// </summary>
-	public string OutputFile { get; set; }
+	public string? OutputFile { get; set; }
 
 	/// <summary>
 	/// Output (destination) file.
 	/// </summary>
-	public bool RunPostProcessor { get; set; }
+	public bool? RunPostProcessor { get; set; }
 
 	/// <summary>
 	/// Output (destination) file.
 	/// </summary>
-	public string PostProcessor { get; set; }
+	public string? PostProcessor { get; set; }
 
 
 	/// <summary>

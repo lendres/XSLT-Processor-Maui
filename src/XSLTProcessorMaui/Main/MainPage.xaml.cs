@@ -3,15 +3,15 @@ using CommunityToolkit.Maui.Views;
 using DigitalProduction.Maui.Controls;
 using DigitalProduction.Maui.ViewModels;
 using DigitalProduction.Maui.Views;
-using XSLTProcessorMaui.ViewModels;
 
 namespace XSLTProcessorMaui;
 
 public partial class MainPage : DigitalProductionMainPage
 {
-	public MainPage()
+	public MainPage(MainViewModel viewModel)
 	{
 		InitializeComponent();
+		BindingContext = viewModel;
 	}
 
 	/// <summary>

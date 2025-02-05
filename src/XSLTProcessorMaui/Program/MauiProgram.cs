@@ -30,6 +30,10 @@ public static class MauiProgram
 			});
 		#endif
 
+		builder.Services.AddSingleton<ICommandLine, CommandLine>();
+		builder.Services.AddSingleton<MainViewModel>();
+        builder.Services.AddSingleton<MainPage>();
+
 		#if DEBUG
 			builder.Logging.AddDebug();
 		#endif
