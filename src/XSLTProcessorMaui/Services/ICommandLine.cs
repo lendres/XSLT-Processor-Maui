@@ -32,7 +32,6 @@ public interface ICommandLine
 	/// </summary>
 	public string? PostProcessor { get; set; }
 
-
 	/// <summary>
 	/// Parse the command line arguments.
 	/// </summary>

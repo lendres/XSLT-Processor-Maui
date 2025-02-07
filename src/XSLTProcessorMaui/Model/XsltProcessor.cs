@@ -109,8 +109,8 @@ public static class XsltProcessor
 
 		foreach (string argumentLine in splitArguments)
 		{
-			char[]   delimiterChars = [','];
-			string[] splitArgumentLine = argumentLine.Split(delimiterChars);
+			char[]		delimiterChars		= [','];
+			string[]	splitArgumentLine	= argumentLine.Split(delimiterChars);
 
 			if (splitArgumentLine.Length != 3)
 			{

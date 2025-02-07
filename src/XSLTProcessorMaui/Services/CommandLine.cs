@@ -45,7 +45,7 @@ public class CommandLine : ICommandLine
 
 	#endregion
 
-	#region
+	#region Methods
 
 	/// <summary>
 	/// Parse the command line arguments.

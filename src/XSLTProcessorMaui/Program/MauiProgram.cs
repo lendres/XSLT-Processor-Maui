@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
 using Microsoft.Maui.LifecycleEvents;
+using Microsoft.UI;
+using Microsoft.UI.Windowing;
 
 namespace XSLTProcessorMaui;
 
@@ -22,9 +24,19 @@ public static class MauiProgram
 			{
 				lifecycle.AddWindows((builder) =>  
 				{  
-					builder.OnWindowCreated(del =>  
+					builder.OnWindowCreated(window =>  
 					{  
-						del.Title = "XSLT Processor";
+						window.Title = "XSLT Processor";
+
+						nint handle			= WinRT.Interop.WindowNative.GetWindowHandle(window);
+						WindowId id			= Microsoft.UI.Win32Interop.GetWindowIdFromWindow(handle);
+						AppWindow appWindow	= Microsoft.UI.Windowing.AppWindow.GetFromWindowId(id);
+						switch (appWindow.Presenter)
+						{
+							case OverlappedPresenter overlappedPresenter:
+								overlappedPresenter.IsMaximizable = false;
+								break;
+						}
 					});  
 				});  
 			});

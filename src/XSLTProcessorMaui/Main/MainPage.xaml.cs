@@ -20,9 +20,12 @@ public partial class MainPage : DigitalProductionMainPage
 	protected override void OnAppearing()
 	{
 		base.OnAppearing();
+
+		// Prevent making the window too narrow or changing the height.
 		App.Window!.MinimumWidth = 600;
-		App.Window.MinimumHeight = 810;
-		App.Window.MaximumHeight = 810;
+		App.Window.Height			= App.Window.Height + 30;
+		App.Window.MinimumHeight	= App.Window.Height;
+		App.Window.MaximumHeight	= App.Window.Height;
 	}
 
 	async void OnAbout(object sender, EventArgs eventArgs)
