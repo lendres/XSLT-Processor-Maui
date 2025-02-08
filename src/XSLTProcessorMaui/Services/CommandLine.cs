@@ -122,7 +122,7 @@ public class CommandLine : ICommandLine
 		// attribute.
 		parser.Parse();
 
-		Help	= parser.UsageInfo.GetOptionsAsString();
+		Help	= parser.UsageInfo.GetOptionsAsString(30, 5000);
 		Errors	= parser.HasErrors ? parser.UsageInfo.GetErrorsAsString() : null;
 	}
 
