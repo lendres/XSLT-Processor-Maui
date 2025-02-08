@@ -8,7 +8,7 @@ public partial class MainViewModel : ObservableObject
 {
 	#region Fields
 
-	private ICommandLine _commandLineArguments;
+	private readonly ICommandLine _commandLineArguments;
 
 	#endregion
 
@@ -33,6 +33,11 @@ public partial class MainViewModel : ObservableObject
 		OutputFileFullPath		= _commandLineArguments.OutputFile			?? Preferences.OutputFile;
 		RunPostprocessing		= _commandLineArguments.RunPostProcessor	?? Preferences.RunPostprocessor;
 		Postprocessor.Value		= _commandLineArguments.PostProcessor		?? Preferences.Postprocessor;
+		CommandLineHelp         = _commandLineArguments.Help;
+		CommandLineErrors		= _commandLineArguments.Errors;
+
+		ShowErrors				= _commandLineArguments.Errors != null;
+		CommandLineErrorMessage	= CommandLineErrors + Environment.NewLine + "Available options are:" + Environment.NewLine + CommandLineHelp;
 	}
 
 	private void AddValidations()
@@ -83,7 +88,19 @@ public partial class MainViewModel : ObservableObject
 	[ObservableProperty]
 	public partial bool									IsSubmittable { get; set; }
 
-	public ProcessingResult ProcessingResult { get; set; } = new();
+	[ObservableProperty]
+	public partial bool									ShowErrors { get; set; }
+
+	[ObservableProperty]
+	public partial string								CommandLineHelp { get; set; }				= string.Empty;
+
+	[ObservableProperty]
+	public partial string?								CommandLineErrors { get; set; }				= null;
+
+	[ObservableProperty]
+	public partial string?								CommandLineErrorMessage { get; set; }		= null;
+
+	public ProcessingResult								ProcessingResult { get; set; }				= new();
 
 	public string OutputFileFullPath
 	{
@@ -164,6 +181,12 @@ public partial class MainViewModel : ObservableObject
 	#endregion
 
 	#region Methods and Commands
+
+	[RelayCommand]
+	private void DismissErrors()
+	{
+		ShowErrors = false;
+	}
 
 	[RelayCommand]
 	private void ClearXsltArguments()

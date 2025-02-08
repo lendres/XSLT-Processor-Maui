@@ -96,6 +96,10 @@ public class CommandLine : ICommandLine
 	)]
 	public bool? Exit { get; set; } = null;
 
+	public string Help { get; private set; } = string.Empty;
+	
+	public string? Errors { get; private set; } = null;
+
 	#endregion
 
 	#region Methods
@@ -117,6 +121,9 @@ public class CommandLine : ICommandLine
 		// Parse the command line arguments.  The parser will call Properties for each command line argument it finds with a matching
 		// attribute.
 		parser.Parse();
+
+		Help	= parser.UsageInfo.GetOptionsAsString();
+		Errors	= parser.HasErrors ? parser.UsageInfo.GetErrorsAsString() : null;
 	}
 
 	#endregion

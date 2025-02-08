@@ -33,6 +33,16 @@ public interface ICommandLine
 	public string? PostProcessor { get; set; }
 
 	/// <summary>
+	/// The help string.
+	/// </summary>
+	public string Help { get; }
+
+	/// <summary>
+	/// Any parsing errors, if they occured.
+	/// </summary>
+	public string? Errors { get; }
+
+	/// <summary>
 	/// Parse the command line arguments.
 	/// </summary>
 	public void ParseCommandLine();

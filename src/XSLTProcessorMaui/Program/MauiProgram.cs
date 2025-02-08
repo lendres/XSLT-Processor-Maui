@@ -18,6 +18,8 @@ public static class MauiProgram
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+				fonts.AddFont("IBMPlexMono-Bold.ttf", "IBMPlexMono-Bold");
+				fonts.AddFont("IBMPlexMono-Regular.ttf", "IBMPlexMono-Regular");
 			});
 		#if WINDOWS
 			builder.ConfigureLifecycleEvents(lifecycle =>  
