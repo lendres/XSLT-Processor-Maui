@@ -28,6 +28,12 @@ public partial class MainPage : DigitalProductionMainPage
 		App.Window.MaximumHeight	= App.Window.Height;
 	}
 
+	async void OnSettings(object sender, EventArgs eventArgs)
+	{
+		SettingsView view = new(new SettingsViewModel());
+		_ = await Shell.Current.ShowPopupAsync(view);
+	}
+
 	async void OnAbout(object sender, EventArgs eventArgs)
 	{
 		AboutView1 view = new(new AboutViewModel(true));

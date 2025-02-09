@@ -12,10 +12,11 @@
 
 	<ContentPage.MenuBarItems>
 		<MenuBarItem Text="File">
+			<MenuFlyoutItem Text="Setitngs..." Clicked="OnSettings"/>
 			<MenuFlyoutItem Text="Exit" Clicked="OnExit"/>
 		</MenuBarItem>
 		<MenuBarItem Text="Help">
-			<MenuFlyoutItem Text="About" Clicked="OnAbout"/>
+			<MenuFlyoutItem Text="About..." Clicked="OnAbout"/>
 		</MenuBarItem>
 	</ContentPage.MenuBarItems>
 

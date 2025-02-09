@@ -33,12 +33,26 @@ public partial class MainViewModel : ObservableObject
 	{
 		_commandLineArguments.ParseCommandLine();
 
-		XmlInputFile.Value		= _commandLineArguments.InputFile			?? Preferences.XmlInputFile;
-		XsltFile.Value			= _commandLineArguments.XsltFile			?? Preferences.XsltFile;
-		XsltArguments.Value		= _commandLineArguments.XsltArguments		?? Preferences.XsltArguments;
-		OutputFileFullPath		= _commandLineArguments.OutputFile			?? Preferences.OutputFile;
-		RunPostprocessing		= _commandLineArguments.RunPostProcessor	?? Preferences.RunPostprocessor;
-		Postprocessor.Value		= _commandLineArguments.PostProcessor		?? Preferences.Postprocessor;
+		// Set initial values.  The command line argument, if provided, takes priority.  Then the values are either restored
+		// from memory (if the memory recovery is specified in the settings) or given a default value.
+		XmlInputFile.Value		= _commandLineArguments.InputFile			??
+			(Preferences.RestoreLastValuesAtStartup ? Preferences.XmlInputFile : string.Empty);
+
+		XsltFile.Value			= _commandLineArguments.XsltFile			??
+			(Preferences.RestoreLastValuesAtStartup ? Preferences.XsltFile : string.Empty);
+
+		XsltArguments.Value		= _commandLineArguments.XsltArguments		??
+			(Preferences.RestoreLastValuesAtStartup ? Preferences.XsltArguments : string.Empty);
+
+		OutputFileFullPath		= _commandLineArguments.OutputFile			??
+			(Preferences.RestoreLastValuesAtStartup ? Preferences.OutputFile : string.Empty);
+
+		RunPostprocessing		= _commandLineArguments.RunPostProcessor	??
+			(Preferences.RestoreLastValuesAtStartup ? Preferences.RunPostprocessor : false);
+
+		Postprocessor.Value		= _commandLineArguments.PostProcessor		??
+			(Preferences.RestoreLastValuesAtStartup ? Preferences.Postprocessor : string.Empty);
+
 		CommandLineHelp         = _commandLineArguments.Help;
 		CommandLineErrors		= _commandLineArguments.Errors;
 
