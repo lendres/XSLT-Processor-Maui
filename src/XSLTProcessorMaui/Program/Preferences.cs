@@ -5,7 +5,7 @@
 /// </summary>
 public static class Preferences
 {
-	#region Settings Properties
+	#region Value Storing Properties
 
 	/// <summary>
 	/// XML file location.
@@ -53,12 +53,25 @@ public static class Preferences
 	}
 
 	/// <summary>
-	/// Postprocess.
+	/// Postprocessor.
 	/// </summary>
 	public static string Postprocessor
 	{
 		get => Microsoft.Maui.Storage.Preferences.Default.Get("Postprocessor", "");
 		set => Microsoft.Maui.Storage.Preferences.Default.Set("Postprocessor", value);
+	}
+
+	#endregion
+
+	#region Settings Properties
+
+	/// <summary>
+	/// Postprocessor.
+	/// </summary>
+	public static bool RestoreLastValuesAtStartup
+	{
+		get => Microsoft.Maui.Storage.Preferences.Default.Get("Restore Last Values At Startup", true);
+		set => Microsoft.Maui.Storage.Preferences.Default.Set("Restore Last Values At Startup", value);
 	}
 
 	#endregion

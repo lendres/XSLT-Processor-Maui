@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<dpviews:PopupView
+	xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+	xmlns:viewmodel="clr-namespace:XSLTProcessorMaui"
+	xmlns:dpcontrols="clr-namespace:DigitalProduction.Maui.Controls;assembly=DigitalProduction.Maui"
+	xmlns:dpviews="clr-namespace:DigitalProduction.Maui.Views;assembly=DigitalProduction.Maui.AppToolkit"
+	x:Class="XSLTProcessorMaui.SettingsView"
+	x:DataType="viewmodel:SettingsViewModel"
+	CanBeDismissedByTappingOutsideOfPopup="False">
+
+	<Border StyleClass="PopupFrameStyle" MinimumWidthRequest="500" MinimumHeightRequest="100">
+
+		<VerticalStackLayout StyleClass="VerticalLayoutStyle">
+
+			<Label Text="Settings" x:Name="TitleLabel" StyleClass="Title" HorizontalOptions="Start"/>
+
+			<!-- The checkbox seems to fudge the spacing hard.  A forced hack of a fix is used. -->
+			<VerticalStackLayout Grid.Row="0" Grid.Column="0" Padding="0" Margin="0,6,0,0" Spacing="0" VerticalOptions="Center">
+				<!-- Force the height to be smaller than it wants to be to take up the unwanted spacing. -->
+				<HorizontalStackLayout Padding="0" Spacing="0" VerticalOptions="Center" HeightRequest="22">
+					<CheckBox
+							IsChecked="{Binding RestoreLastValuesAtStartup}"
+							VerticalOptions="Center"/>
+					<!-- Enlarge the label so the desenders don't get cut off. -->
+					<Label Text="Restore last used values on start up." VerticalOptions="Center" Margin="0" HeightRequest="25" Padding="0"/>
+				</HorizontalStackLayout>
+				<!-- Pad the bottom to provide spacing before the next element. -->
+				<HorizontalStackLayout  Padding="0" Spacing="0" HeightRequest="8"/>
+			</VerticalStackLayout>
+
+			<HorizontalStackLayout StyleClass="BottomButtonRowStyle">
+				<Button 
+					Text="Save"
+					HorizontalOptions="End"
+					StyleClass="StandardSizeButtonStyle"
+					IsEnabled="{Binding IsSubmittable}"
+					Clicked="OnSaveButtonClicked"/>
+				<Button 
+					Text="Cancel"
+					StyleClass="StandardSizeButtonStyle"
+					HorizontalOptions="End"
+					Clicked="OnCancelButtonClicked"/>
+			</HorizontalStackLayout>
+
+		</VerticalStackLayout>
+	</Border>
+
+</dpviews:PopupView>

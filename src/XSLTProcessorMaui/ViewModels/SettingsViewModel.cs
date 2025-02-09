@@ -20,19 +20,11 @@ public partial class SettingsViewModel : ObservableObject
 
 	private void InitializeValues()
 	{
-		// Preferences.RunPostprocessor;
+		RestoreLastValuesAtStartup = Preferences.RestoreLastValuesAtStartup;
 	}
 
 	private void AddValidations()
 	{
-		//XmlInputFile.Validations.Add(new IsNotNullOrEmptyRule		{ ValidationMessage = "A file name is required." });
-		//XmlInputFile.Validations.Add(new FileExistsRule				{ ValidationMessage = "The file does not exist." });
-		//XmlInputFile.Validate();
-
-		//OutputFile.Validations.Add(new IsNotNullOrEmptyRule			{ ValidationMessage = "A file name is required." });
-		//OutputFile.Validate();
-
-		//OnRunPostprocessingChanged(RunPostprocessing);
 	}
 
 	#endregion
@@ -40,7 +32,7 @@ public partial class SettingsViewModel : ObservableObject
 	#region Properties
 
 	[ObservableProperty]
-	public partial ValidatableObject<string>			XmlInputFile { get; set; }					= new();
+	public partial bool									RestoreLastValuesAtStartup { get; set; }
 
 	[ObservableProperty]
 	public partial bool									IsSubmittable { get; set; }
@@ -49,13 +41,6 @@ public partial class SettingsViewModel : ObservableObject
 
 	#region Validation
 
-	[RelayCommand]
-	private void ValidateXmlInputFile()
-	{
-		XmlInputFile.Validate();
-		ValidateSubmittable();
-	}
-
 	public bool ValidateSubmittable() => IsSubmittable = true;
 	//	OutputDirectory.IsValid &&
 	//	Postprocessor.IsValid;
@@ -63,30 +48,13 @@ public partial class SettingsViewModel : ObservableObject
 	#endregion
 
 	#region On Properties Changed
-
-	//partial void OnRunPostprocessingChanged(bool value)
-	//{
-	//	if (value)
-	//	{ 
-	//		Postprocessor.Validations.Add(new IsNotNullOrEmptyRule { ValidationMessage = "A file name is required." });
-	//		Postprocessor.Validations.Add(new FileExistsRule { ValidationMessage = "The file does not exist." });
-	//		ValidatePostprocessor();
-	//	}
-	//	else
-	//	{
-	//		Postprocessor.Validations.Clear();
-	//		ValidatePostprocessor();
-	//	}
-	//}
-
 	#endregion
 
 	#region Methods and Commands
 
-
-	private void SaveSettings()
+	public void Save()
 	{
-		//Preferences.XmlInputFile		= XmlInputFile.Value!.Trim();
+		Preferences.RestoreLastValuesAtStartup = RestoreLastValuesAtStartup;
 	}
 
 	#endregion
