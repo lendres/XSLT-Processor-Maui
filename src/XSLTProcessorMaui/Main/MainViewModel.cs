@@ -1,45 +1,62 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using DigitalProduction.Interface;
 using DigitalProduction.Maui.Validation;
 
-namespace XSLTProcessorMaui.ViewModels;
+namespace XSLTProcessorMaui;
 
 public partial class MainViewModel : ObservableObject
 {
 	#region Fields
+
+	private readonly ICommandLine	_commandLineArguments;
+	private Timer?					_timer							= null;
+
 	#endregion
 
 	#region Construction
 
-	public MainViewModel()
+	public MainViewModel(ICommandLine commandLineArguments)
     {
+		_commandLineArguments = commandLineArguments;
+
 		InitializeValues();
 		AddValidations();
 		ValidateSubmittable();
+
+		if (!ShowErrors && IsSubmittable && _commandLineArguments.Run)
+		{
+			Process();
+		}
 	}
 
 	private void InitializeValues()
 	{
-		XmlInputFile.Value		= Preferences.XmlInputFile;
-		XsltFile.Value			= Preferences.XsltFile;
-		XsltArguments.Value		= Preferences.XsltArguments;
-		OutputFileFullPath		= Preferences.OutputFile;
-		RunPostprocessing		= Preferences.RunPostprocessor;
-		Postprocessor.Value		= Preferences.Postprocessor;
+		_commandLineArguments.ParseCommandLine();
+
+		XmlInputFile.Value		= _commandLineArguments.InputFile			?? Preferences.XmlInputFile;
+		XsltFile.Value			= _commandLineArguments.XsltFile			?? Preferences.XsltFile;
+		XsltArguments.Value		= _commandLineArguments.XsltArguments		?? Preferences.XsltArguments;
+		OutputFileFullPath		= _commandLineArguments.OutputFile			?? Preferences.OutputFile;
+		RunPostprocessing		= _commandLineArguments.RunPostProcessor	?? Preferences.RunPostprocessor;
+		Postprocessor.Value		= _commandLineArguments.PostProcessor		?? Preferences.Postprocessor;
+		CommandLineHelp         = _commandLineArguments.Help;
+		CommandLineErrors		= _commandLineArguments.Errors;
+
+		ShowErrors				= _commandLineArguments.Errors != null;
+		CommandLineErrorMessage	= CommandLineErrors + Environment.NewLine + "Available options are:" + Environment.NewLine + CommandLineHelp;
 	}
 
 	private void AddValidations()
 	{
-		XmlInputFile.Validations.Add(new IsNotNullOrEmptyRule	{ ValidationMessage = "A file name is required." });
-		XmlInputFile.Validations.Add(new FileExistsRule			{ ValidationMessage = "The file does not exist." });
+		XmlInputFile.Validations.Add(new IsNotNullOrEmptyRule		{ ValidationMessage = "A file name is required." });
+		XmlInputFile.Validations.Add(new FileExistsRule				{ ValidationMessage = "The file does not exist." });
 		XmlInputFile.Validate();
 
-		XsltFile.Validations.Add(new IsNotNullOrEmptyRule	{ ValidationMessage = "A file name is required." });
-		XsltFile.Validations.Add(new FileExistsRule			{ ValidationMessage = "The file does not exist." });
+		XsltFile.Validations.Add(new IsNotNullOrEmptyRule			{ ValidationMessage = "A file name is required." });
+		XsltFile.Validations.Add(new FileExistsRule					{ ValidationMessage = "The file does not exist." });
 		XsltFile.Validate();
 
-		OutputFile.Validations.Add(new IsNotNullOrEmptyRule { ValidationMessage = "A file name is required." });
+		OutputFile.Validations.Add(new IsNotNullOrEmptyRule			{ ValidationMessage = "A file name is required." });
 		OutputFile.Validate();
 
 		OutputDirectory.Validations.Add(new IsNotNullOrEmptyRule	{ ValidationMessage = "A directory is required." });
@@ -77,7 +94,22 @@ public partial class MainViewModel : ObservableObject
 	[ObservableProperty]
 	public partial bool									IsSubmittable { get; set; }
 
-	public ProcessingResult ProcessingResult { get; set; } = new();
+	[ObservableProperty]
+	public partial bool									ShowErrors { get; set; }
+
+	[ObservableProperty]
+	public partial string								CommandLineHelp { get; set; }				= string.Empty;
+
+	[ObservableProperty]
+	public partial string?								CommandLineErrors { get; set; }				= null;
+
+	[ObservableProperty]
+	public partial string?								CommandLineErrorMessage { get; set; }		= null;
+
+	public ProcessingResult								ProcessingResult { get; set; }				= new();
+
+	[ObservableProperty]
+	public partial string								Flag { get; set; }							= "Running";
 
 	public string OutputFileFullPath
 	{
@@ -160,6 +192,12 @@ public partial class MainViewModel : ObservableObject
 	#region Methods and Commands
 
 	[RelayCommand]
+	private void DismissErrors()
+	{
+		ShowErrors = false;
+	}
+
+	[RelayCommand]
 	private void ClearXsltArguments()
 	{
 		XsltArguments.Value = "";
@@ -178,7 +216,28 @@ public partial class MainViewModel : ObservableObject
 	public ProcessingResult Process()
 	{
 		SaveSettings();
-		return XsltProcessor.Transform(XmlInputFile.Value!, XsltFile.Value!, XsltArguments.Value!, OutputFileFullPath, RunPostprocessing, Postprocessor.Value!);
+		ProcessingResult result = XsltProcessor.Transform(XmlInputFile.Value!, XsltFile.Value!, XsltArguments.Value!, OutputFileFullPath, RunPostprocessing, Postprocessor.Value!);
+
+		_timer = new Timer((obj) =>
+			{
+				UpdateFlag();
+				_timer?.Dispose();
+			}, 
+			null, 4000, Timeout.Infinite
+		);
+		return result;
+	}
+
+	private void UpdateFlag()
+	{
+		if (_commandLineArguments.Exit)
+		{
+			Flag = "Close";
+		}
+		else
+		{
+			Flag = "Done";
+		}
 	}
 
 	#endregion
