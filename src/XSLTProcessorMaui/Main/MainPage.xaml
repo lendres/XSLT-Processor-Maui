@@ -6,13 +6,9 @@
 	xmlns:dptkcontrols="clr-namespace:DigitalProduction.Maui.Controls;assembly=DigitalProduction.Maui.AppToolkit"
 	xmlns:dpconverters="clr-namespace:DigitalProduction.Maui.Converters;assembly=DigitalProduction.Maui.AppToolkit"
     xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-	xmlns:viewmodel="clr-namespace:XSLTProcessorMaui.ViewModels"
+	xmlns:viewmodel="clr-namespace:XSLTProcessorMaui"
 	x:DataType="viewmodel:MainViewModel"
 	x:Class="XSLTProcessorMaui.MainPage">
-
-	<ContentPage.BindingContext>
-		<viewmodel:MainViewModel/>
-	</ContentPage.BindingContext>
 
 	<ContentPage.MenuBarItems>
 		<MenuBarItem Text="File">
@@ -28,24 +24,33 @@
 		<dpconverters:FirstValidationErrorConverter x:Key="FirstValidationErrorConverter"/>
 	</ContentPage.Resources>
 
-	<ScrollView>
-        <VerticalStackLayout Padding="30,0" Spacing="0">
+	<VerticalStackLayout Padding="0" Spacing="0">
+		<VerticalStackLayout Padding="30,0,30,10" Spacing="20" IsVisible="{Binding ShowErrors}">
+			<Border Style="{StaticResource MessageBoxStyle}">
+				<Label Text="{Binding CommandLineErrorMessage}" FontFamily="IBMPlexMono-Regular" LineBreakMode="WordWrap"/>
+			</Border>
+			<Button 
+				Text="Close"
+				HorizontalOptions="FillAndExpand"
+				Command="{Binding DismissErrorsCommand}"/>
+		</VerticalStackLayout>
 
+		<VerticalStackLayout Padding="30,0,30,10" Spacing="0" IsVisible="{Binding ShowErrors, Converter={StaticResource InvertedBoolConverter}}">
 			<!-- XSLT Processing -->
-            <Label
-                Text="XSLT Processing"
-                Style="{StaticResource SubHeadline}"
-                SemanticProperties.HeadingLevel="Level2"/>
-            <BoxView Style="{StaticResource HorizontalBoarder}"/>
+			<Border StyleClass="TitleBorder">
+				<Label
+					Text="XSLT Processing"
+					StyleClass="DivisionHeader"/>
+			</Border>
+			<!--<Border StyleClass="DivisionBorder"/>-->
 
-            <Grid
-				Grid.Row="1"
+			<Grid
 				RowDefinitions="Auto,Auto,25,Auto,Auto,25,Auto,Auto,25,Auto,Auto,25,Auto,Auto,17"
 				RowSpacing="0"
 				ColumnDefinitions="*,100"
 				ColumnSpacing="8">
-				
-                <!-- XML input file. -->
+
+				<!-- XML input file. -->
 				<Label
 					Grid.Row="0" Grid.Column="0"
 					Text="XML Input File" StyleClass="ControlLabel"/>
@@ -55,19 +60,19 @@
 					Placeholder="XML File"
 					Text="{Binding XmlInputFile.Value}"
 					HorizontalOptions="FillAndExpand">
-                    <Entry.Behaviors>
+					<Entry.Behaviors>
 						<toolkit:EventToCommandBehavior
-                            x:TypeArguments="system:EventArgs"
+							x:TypeArguments="system:EventArgs"
 							Command="{Binding ValidateXmlInputFileCommand}"
-                            BindingContext="{Binding Path=BindingContext, Source={x:Reference XmlInputFileEntry}, x:DataType=Entry}"
+							BindingContext="{Binding Path=BindingContext, Source={x:Reference XmlInputFileEntry}, x:DataType=Entry}"
 							EventName="TextChanged"/>
-                    </Entry.Behaviors>
-                </Entry>
-                <Label
+					</Entry.Behaviors>
+				</Entry>
+				<Label
 					Grid.Row="2" Grid.Column="0"
 					Text="{Binding XmlInputFile.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
 					StyleClass="InvalidLabelStyle"/>
-                <Button
+				<Button
 					Grid.Row="1" Grid.Column="1"
 					Text="Browse"
 					SemanticProperties.Hint="Browse for the XML file."
@@ -87,9 +92,9 @@
 					HorizontalOptions="FillAndExpand">
 					<Entry.Behaviors>
 						<toolkit:EventToCommandBehavior
-                            x:TypeArguments="system:EventArgs"
+							x:TypeArguments="system:EventArgs"
 							Command="{Binding ValidateXsltFileCommand}"
-                            BindingContext="{Binding Path=BindingContext, Source={x:Reference XsltFileEntry}, x:DataType=Entry}"
+							BindingContext="{Binding Path=BindingContext, Source={x:Reference XsltFileEntry}, x:DataType=Entry}"
 							EventName="TextChanged"/>
 					</Entry.Behaviors>
 				</Entry>
@@ -116,13 +121,13 @@
 					Text="{Binding XsltArguments.Value}"
 					HorizontalOptions="FillAndExpand">
 					<!--<Entry.Behaviors>
-						<toolkit:EventToCommandBehavior Command="{Binding ValidateXsltArgumentsCommand}" EventName="TextChanged"/>
-					</Entry.Behaviors>-->
+							<toolkit:EventToCommandBehavior Command="{Binding ValidateXsltArgumentsCommand}" EventName="TextChanged"/>
+						</Entry.Behaviors>-->
 				</Entry>
 				<!--<Label
-					Grid.Row="8" Grid.Column="0"
-					Text="{Binding XsltArguments.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
-					StyleClass="InvalidLabelStyle"/>-->
+						Grid.Row="8" Grid.Column="0"
+						Text="{Binding XsltArguments.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
+						StyleClass="InvalidLabelStyle"/>-->
 				<Button
 					Grid.Row="7" Grid.Column="1"
 					Text="Clear"
@@ -143,9 +148,9 @@
 					HorizontalOptions="FillAndExpand">
 					<Entry.Behaviors>
 						<toolkit:EventToCommandBehavior
-                            x:TypeArguments="system:EventArgs"
+							x:TypeArguments="system:EventArgs"
 							Command="{Binding ValidateOutputFileCommand}"
-                            BindingContext="{Binding Path=BindingContext, Source={x:Reference OutputFileEntry}, x:DataType=Entry}"
+							BindingContext="{Binding Path=BindingContext, Source={x:Reference OutputFileEntry}, x:DataType=Entry}"
 							EventName="TextChanged"/>
 					</Entry.Behaviors>
 				</Entry>
@@ -154,12 +159,12 @@
 					Text="{Binding OutputFile.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
 					StyleClass="InvalidLabelStyle"/>
 				<!--<Button
-					Grid.Row="10" Grid.Column="1"
-					Text="Clear"
-					SemanticProperties.Hint="Browse for the output file."
-					Clicked="OnBrowseForOutputFile"
-					HorizontalOptions="Center"
-					VerticalOptions="Fill"/>-->
+						Grid.Row="10" Grid.Column="1"
+						Text="Clear"
+						SemanticProperties.Hint="Browse for the output file."
+						Clicked="OnBrowseForOutputFile"
+						HorizontalOptions="Center"
+						VerticalOptions="Fill"/>-->
 
 				<!-- Output directory. -->
 				<Label
@@ -173,9 +178,9 @@
 					HorizontalOptions="FillAndExpand">
 					<Entry.Behaviors>
 						<toolkit:EventToCommandBehavior
-                            x:TypeArguments="system:EventArgs"
+							x:TypeArguments="system:EventArgs"
 							Command="{Binding ValidateOutputDirectoryCommand}"
-                            BindingContext="{Binding Path=BindingContext, Source={x:Reference OutputDirectoryEntry}, x:DataType=Entry}"
+							BindingContext="{Binding Path=BindingContext, Source={x:Reference OutputDirectoryEntry}, x:DataType=Entry}"
 							EventName="TextChanged"/>
 					</Entry.Behaviors>
 				</Entry>
@@ -191,15 +196,14 @@
 					HorizontalOptions="Center"
 					VerticalOptions="Fill"/>
 			</Grid>
-			
 
 			<!-- Post Processing -->
-            <Label
-				Margin="0,30,0,0"
-                Text="Post Processing"
-                Style="{StaticResource SubHeadline}"
-                SemanticProperties.HeadingLevel="Level2"/>
-			<BoxView Style="{StaticResource HorizontalBoarder}"/>
+			<Border StyleClass="TitleBorder" Margin="0,12,0,10">
+				<Label
+					Text="Post Processing"
+					StyleClass="DivisionHeader"/>
+			</Border>
+			<!--<Border StyleClass="DivisionBorder"/>-->
 
 			<Grid
 				RowDefinitions="Auto,Auto,17"
@@ -228,9 +232,9 @@
 					IsEnabled="{Binding RunPostprocessing}">
 					<Entry.Behaviors>
 						<toolkit:EventToCommandBehavior
-                            x:TypeArguments="system:EventArgs"
+							x:TypeArguments="system:EventArgs"
 							Command="{Binding ValidatePostprocessorCommand}"
-                            BindingContext="{Binding Path=BindingContext, Source={x:Reference PostprocessorEntry}, x:DataType=Entry}"
+							BindingContext="{Binding Path=BindingContext, Source={x:Reference PostprocessorEntry}, x:DataType=Entry}"
 							EventName="TextChanged"/>
 					</Entry.Behaviors>
 				</Entry>
@@ -248,24 +252,30 @@
 					IsEnabled="{Binding RunPostprocessing}"/>
 			</Grid>
 
-
 			<!-- Bottom Buttons -->
-			<!--<BoxView Style="{StaticResource HorizontalBoarder}"/>-->
-            <HorizontalStackLayout
-				Margin="0,10,0,0"
-				StyleClass="BottomButtonRowStyle">
-                <Button 
+			<Border Grid.Row="0" StyleClass="DivisionBorder" Margin="0,12,0,10"/>
+			<HorizontalStackLayout
+				Grid.Row="1"
+				StyleClass="BottomButtonRowStyle"
+				Margin="0,10,0,20">
+				<Button 
 					Text="Process"
 					HorizontalOptions="End"
 					IsEnabled="{Binding IsSubmittable}"
 					Clicked="OnProcessButtonClicked"/>
-                <Button 
+				<Button 
 					Text="Close"
 					HorizontalOptions="End"
 					Clicked="OnExit"/>
-            </HorizontalStackLayout>
+			</HorizontalStackLayout>
+		</VerticalStackLayout>
 
-        </VerticalStackLayout>
-    </ScrollView>
+		<!--
+			An invisible label used as a flag so we can close the application from the same thread as the UI is on.  This is a terrible method,
+			but I cannot figure out a better one.  For now, it works.
+		-->
+		<Label x:Name="FlagLabel" Text="{Binding Flag}" PropertyChanged="FlagPropertyChanged" IsVisible="False"/>
+
+	</VerticalStackLayout>
 
 </dptkcontrols:DigitalProductionMainPage>

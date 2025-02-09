@@ -3,15 +3,15 @@ using CommunityToolkit.Maui.Views;
 using DigitalProduction.Maui.Controls;
 using DigitalProduction.Maui.ViewModels;
 using DigitalProduction.Maui.Views;
-using XSLTProcessorMaui.ViewModels;
 
 namespace XSLTProcessorMaui;
 
 public partial class MainPage : DigitalProductionMainPage
 {
-	public MainPage()
+	public MainPage(MainViewModel viewModel)
 	{
 		InitializeComponent();
+		BindingContext = viewModel;
 	}
 
 	/// <summary>
@@ -20,9 +20,12 @@ public partial class MainPage : DigitalProductionMainPage
 	protected override void OnAppearing()
 	{
 		base.OnAppearing();
-		App.Window!.MinimumWidth = 600;
-		App.Window.MinimumHeight = 810;
-		App.Window.MaximumHeight = 810;
+
+		// Prevent making the window too narrow or changing the height.
+		App.Window!.MinimumWidth	= 600;
+		App.Window.Height			= App.Window.Height + 30;
+		App.Window.MinimumHeight	= App.Window.Height;
+		App.Window.MaximumHeight	= App.Window.Height;
 	}
 
 	async void OnAbout(object sender, EventArgs eventArgs)
@@ -108,5 +111,18 @@ public partial class MainPage : DigitalProductionMainPage
 		ProcessingResult processingResult = viewModel.Process();
 
 		await DisplayAlert("Processing Result", processingResult.Message, "Ok");
+	}
+
+	private void FlagPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs propertyChangedEventArgs)
+	{
+		if (sender is Label label && label.Text == "Close")
+		{
+			Close();
+		}
+	}
+
+	protected static void Close()
+	{
+		Application.Current?.Quit();
 	}
 }

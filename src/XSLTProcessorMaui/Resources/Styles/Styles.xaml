@@ -6,4 +6,33 @@
 	xmlns:dpcontrols="clr-namespace:DigitalProduction.Maui.Controls;assembly=DigitalProduction.Maui"
 	xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
 
+	<Style TargetType="Label" Class="DivisionHeader">
+		<Setter Property="FontSize" Value="22"/>
+		<Setter Property="FontAttributes" Value="Bold"/>
+		<Setter Property="HorizontalOptions" Value="Center"/>
+		<Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource DivisionColor}, Dark={StaticResource DivisionColor}}"/>
+	</Style>
+
+	<Style TargetType="Border" Class="TitleBorder">
+		<Setter Property="StrokeShape" Value="RoundRectangle 10"/>
+		<Setter Property="StrokeThickness" Value="2"/>
+		<Setter Property="Padding" Value="0,0,0,2"/>
+		<Setter Property="Margin" Value="0,2,0,6"/>
+		<Setter Property="Stroke" Value="{AppThemeBinding Light={StaticResource DivisionColor}, Dark={StaticResource DivisionColor}}"/>
+	</Style>
+
+	<Style TargetType="Border" Class="DivisionBorder">
+		<Setter Property="StrokeShape" Value="RoundRectangle 2,2,2,2"/>
+		<Setter Property="StrokeThickness" Value="2"/>
+		<Setter Property="Margin" Value="0,2,0,6"/>
+		<Setter Property="Background" Value="{AppThemeBinding Light={StaticResource DivisionColor}, Dark={StaticResource DivisionColor}}"/>
+		<Setter Property="Stroke" Value="{AppThemeBinding Light={StaticResource DivisionColor}, Dark={StaticResource DivisionColor}}"/>
+	</Style>
+
+	<Style TargetType="Border" x:Key="MessageBoxStyle">
+		<Setter Property="Stroke" Value="{StaticResource SecondaryBrush}" />
+		<Setter Property="StrokeThickness" Value="1" />
+		<Setter Property="Padding" Value="10" />
+	</Style>
+
 </ResourceDictionary>
