@@ -1,4 +1,6 @@
-﻿namespace XSLTProcessorMaui;
+﻿using DigitalProduction.CommandLine;
+
+namespace XSLTProcessorMaui;
 
 public interface ICommandLine
 {
@@ -31,6 +33,17 @@ public interface ICommandLine
 	/// Output (destination) file.
 	/// </summary>
 	public string? PostProcessor { get; set; }
+
+	/// <summary>
+	/// Specifies that the translation should begin immediately.
+	/// -run
+	/// </summary>
+	public bool Run { get; set; }
+
+	/// <summary>
+	/// Specifies that the software should exit after running the transformation and launching the postprocessor (if specified).
+	/// </summary>
+	public bool Exit { get; set; }
 
 	/// <summary>
 	/// The help string.

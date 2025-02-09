@@ -2,7 +2,6 @@
   "profiles": {
     "Windows Machine": {
       "commandName": "Project",
-      "commandLineArgs": "-inputfile \"R:\\Programming\\Resume\\Source\\Resumes\\Resume - Oil and Gas2.xml\" -rpp -xxxx",
       "nativeDebugging": false
     }
   }

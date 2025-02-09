@@ -269,6 +269,13 @@
 					Clicked="OnExit"/>
 			</HorizontalStackLayout>
 		</VerticalStackLayout>
+
+		<!--
+			An invisible label used as a flag so we can close the application from the same thread as the UI is on.  This is a terrible method,
+			but I cannot figure out a better one.  For now, it works.
+		-->
+		<Label x:Name="FlagLabel" Text="{Binding Flag}" PropertyChanged="FlagPropertyChanged" IsVisible="False"/>
+
 	</VerticalStackLayout>
 
 </dptkcontrols:DigitalProductionMainPage>

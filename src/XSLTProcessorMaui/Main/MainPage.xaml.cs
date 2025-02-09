@@ -112,4 +112,17 @@ public partial class MainPage : DigitalProductionMainPage
 
 		await DisplayAlert("Processing Result", processingResult.Message, "Ok");
 	}
+
+	private void FlagPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs propertyChangedEventArgs)
+	{
+		if (sender is Label label && label.Text == "Close")
+		{
+			Close();
+		}
+	}
+
+	protected static void Close()
+	{
+		Application.Current?.Quit();
+	}
 }

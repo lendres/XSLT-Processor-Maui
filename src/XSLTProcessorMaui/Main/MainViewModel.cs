@@ -8,7 +8,8 @@ public partial class MainViewModel : ObservableObject
 {
 	#region Fields
 
-	private readonly ICommandLine _commandLineArguments;
+	private readonly ICommandLine	_commandLineArguments;
+	private Timer?					_timer							= null;
 
 	#endregion
 
@@ -21,6 +22,11 @@ public partial class MainViewModel : ObservableObject
 		InitializeValues();
 		AddValidations();
 		ValidateSubmittable();
+
+		if (!ShowErrors && IsSubmittable && _commandLineArguments.Run)
+		{
+			Process();
+		}
 	}
 
 	private void InitializeValues()
@@ -101,6 +107,9 @@ public partial class MainViewModel : ObservableObject
 	public partial string?								CommandLineErrorMessage { get; set; }		= null;
 
 	public ProcessingResult								ProcessingResult { get; set; }				= new();
+
+	[ObservableProperty]
+	public partial string								Flag { get; set; }							= "Running";
 
 	public string OutputFileFullPath
 	{
@@ -207,7 +216,28 @@ public partial class MainViewModel : ObservableObject
 	public ProcessingResult Process()
 	{
 		SaveSettings();
-		return XsltProcessor.Transform(XmlInputFile.Value!, XsltFile.Value!, XsltArguments.Value!, OutputFileFullPath, RunPostprocessing, Postprocessor.Value!);
+		ProcessingResult result = XsltProcessor.Transform(XmlInputFile.Value!, XsltFile.Value!, XsltArguments.Value!, OutputFileFullPath, RunPostprocessing, Postprocessor.Value!);
+
+		_timer = new Timer((obj) =>
+			{
+				UpdateFlag();
+				_timer?.Dispose();
+			}, 
+			null, 4000, Timeout.Infinite
+		);
+		return result;
+	}
+
+	private void UpdateFlag()
+	{
+		if (_commandLineArguments.Exit)
+		{
+			Flag = "Close";
+		}
+		else
+		{
+			Flag = "Done";
+		}
 	}
 
 	#endregion

@@ -22,7 +22,7 @@ public class CommandLine : ICommandLine
 	/// </summary>
 	[CommandLineOption(
 		Name			= "xsltfile",
-		Aliases			= "f",
+		Aliases			= "t",
 		Description		= "XSLT file."
 	)]
 	public string? XsltFile { get; set; } = null;
@@ -82,7 +82,7 @@ public class CommandLine : ICommandLine
 		GroupId			= "commands",
 		Description		= "Specifies that the translation should begin immediately.  Cannot be combined with the exit command."
 	)]
-	public bool? Run { get; set; } = null;
+	public bool Run { get; set; } = false;
 
 	/// <summary>
 	/// Specifies that the software should exit after running the transformation and launching the postprocessor (if specified).
@@ -94,7 +94,7 @@ public class CommandLine : ICommandLine
 		GroupId			= "commands",
 		Description		= "Specifies that the software should run and then close after running.  Cannot be combined with the run command."
 	)]
-	public bool? Exit { get; set; } = null;
+	public bool Exit { get; set; } = false;
 
 	public string Help { get; private set; } = string.Empty;
 	
@@ -122,7 +122,13 @@ public class CommandLine : ICommandLine
 		// attribute.
 		parser.Parse();
 
-		Help	= parser.UsageInfo.GetOptionsAsString(30, 5000);
+		// Exit implies that run is also true.
+		if (Exit)
+		{
+			Run = true;
+		}
+
+		Help	= parser.UsageInfo.GetOptionsAsString(35, 5000);
 		Errors	= parser.HasErrors ? parser.UsageInfo.GetErrorsAsString() : null;
 	}
 
