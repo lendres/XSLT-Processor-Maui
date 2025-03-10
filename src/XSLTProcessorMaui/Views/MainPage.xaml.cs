@@ -23,7 +23,7 @@ public partial class MainPage : DigitalProductionMainPage
 
 		// Prevent making the window too narrow or changing the height.
 		App.Window!.MinimumWidth	= 600;
-		App.Window.Height			= App.Window.Height + 30;
+		App.Window.Height			= App.Window.Height - 22;
 		App.Window.MinimumHeight	= App.Window.Height;
 		App.Window.MaximumHeight	= App.Window.Height;
 	}
