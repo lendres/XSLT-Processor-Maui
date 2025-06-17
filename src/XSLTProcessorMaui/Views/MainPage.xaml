@@ -262,11 +262,13 @@
 			<!-- Bottom Buttons -->
 			<Border Grid.Row="0" StyleClass="DivisionBorder" Margin="0,12,0,10"/>
 			<HorizontalStackLayout
+				x:Name="HorizontalStackForButton"
 				Grid.Row="1"
 				StyleClass="BottomButtonRowStyle"
 				Margin="0,10,0,20">
 				<Button 
 					Text="Process"
+					x:Name="ProcessButton"
 					HorizontalOptions="End"
 					IsEnabled="{Binding IsSubmittable}"
 					Clicked="OnProcessButtonClicked"
