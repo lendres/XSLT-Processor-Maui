@@ -1,8 +1,6 @@
 ﻿using CommunityToolkit.Maui;
 using Microsoft.Extensions.Logging;
-using Microsoft.Maui.LifecycleEvents;
-using Microsoft.UI;
-using Microsoft.UI.Windowing;
+using DigitalProduction.Maui.UI;
 
 namespace XSLTProcessorMaui;
 
@@ -21,28 +19,14 @@ public static class MauiProgram
 				fonts.AddFont("IBMPlexMono-Bold.ttf", "IBMPlexMono-Bold");
 				fonts.AddFont("IBMPlexMono-Regular.ttf", "IBMPlexMono-Regular");
 			});
-		#if WINDOWS
-			builder.ConfigureLifecycleEvents(lifecycle =>  
-			{
-				lifecycle.AddWindows((builder) =>  
-				{  
-					builder.OnWindowCreated(window =>  
-					{  
-						window.Title = "XSLT Processor";
 
-						nint handle			= WinRT.Interop.WindowNative.GetWindowHandle(window);
-						WindowId id			= Microsoft.UI.Win32Interop.GetWindowIdFromWindow(handle);
-						AppWindow appWindow	= Microsoft.UI.Windowing.AppWindow.GetFromWindowId(id);
-						switch (appWindow.Presenter)
-						{
-							case OverlappedPresenter overlappedPresenter:
-								overlappedPresenter.IsMaximizable = false;
-								break;
-						}
-					});  
-				});  
-			});
-		#endif
+		LifecycleOptions lifecycleOptions = new()
+		{
+			EnsureOnScreen			= false,
+			DisableMaximizeButton	= true,
+			WindowTitle				= "XSLT Processor"
+		};
+		DigitalProduction.Maui.UI.LifecycleEventsInstaller.ConfigureLifecycleEvents(builder, lifecycleOptions);
 
 		builder.Services.AddSingleton<ICommandLine, CommandLine>();
 		builder.Services.AddSingleton<MainViewModel>();
