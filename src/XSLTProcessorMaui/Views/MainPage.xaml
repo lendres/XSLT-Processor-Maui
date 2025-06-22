@@ -12,6 +12,11 @@
 
 	<ContentPage.MenuBarItems>
 		<MenuBarItem Text="File">
+			<MenuFlyoutItem Text="Process" IsEnabled="{Binding IsSubmittable}" Clicked="OnProcessButtonClicked">
+				<MenuFlyoutItem.KeyboardAccelerators>
+					<KeyboardAccelerator Key="F5"/>
+				</MenuFlyoutItem.KeyboardAccelerators>
+			</MenuFlyoutItem>
 			<MenuFlyoutItem Text="Setitngs..." Clicked="OnSettings"/>
 			<MenuFlyoutItem Text="Exit" Clicked="OnExit"/>
 		</MenuBarItem>
