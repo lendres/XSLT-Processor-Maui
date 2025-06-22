@@ -12,6 +12,11 @@
 
 	<ContentPage.MenuBarItems>
 		<MenuBarItem Text="File">
+			<MenuFlyoutItem Text="Process" IsEnabled="{Binding IsSubmittable}" Clicked="OnProcessButtonClicked">
+				<MenuFlyoutItem.KeyboardAccelerators>
+					<KeyboardAccelerator Key="F5"/>
+				</MenuFlyoutItem.KeyboardAccelerators>
+			</MenuFlyoutItem>
 			<MenuFlyoutItem Text="Setitngs..." Clicked="OnSettings"/>
 			<MenuFlyoutItem Text="Exit" Clicked="OnExit"/>
 		</MenuBarItem>
@@ -262,11 +267,13 @@
 			<!-- Bottom Buttons -->
 			<Border Grid.Row="0" StyleClass="DivisionBorder" Margin="0,12,0,10"/>
 			<HorizontalStackLayout
+				x:Name="HorizontalStackForButton"
 				Grid.Row="1"
 				StyleClass="BottomButtonRowStyle"
 				Margin="0,10,0,20">
 				<Button 
 					Text="Process"
+					x:Name="ProcessButton"
 					HorizontalOptions="End"
 					IsEnabled="{Binding IsSubmittable}"
 					Clicked="OnProcessButtonClicked"
