@@ -23,13 +23,9 @@ public partial class MainPage : DigitalProductionMainPage
 
 		// Prevent making the window too narrow or changing the height.
 		App.Window!.MinimumWidth	= 600;
-//App.Window.Height			= App.Window.Height - 20;
+		//App.Window.Height			= App.Window.Height - 20;
 		App.Window.MinimumHeight	= App.Window.Height;
 		App.Window.MaximumHeight	= App.Window.Height;
-
-double height = ProcessButton.Y + ProcessButton.Height;
-double sheight = HorizontalStackForButton.Height;
-double sPostion = HorizontalStackForButton.Y;
 	}
 
 	async void OnSettings(object sender, EventArgs eventArgs)
