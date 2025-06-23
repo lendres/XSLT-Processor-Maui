@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<dpviews:PopupView 
+	xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:system="clr-namespace:System;assembly=mscorlib"
+	xmlns:dpconverters="clr-namespace:DigitalProduction.Maui.Converters;assembly=DigitalProduction.Maui.AppToolkit"
+	xmlns:dpviews="clr-namespace:DigitalProduction.Maui.Views;assembly=DigitalProduction.Maui.AppToolkit"
+	x:Class="Data.Translation.Pages.DisplayAlertPopup"
+	x:Name="self"
+	CanBeDismissedByTappingOutsideOfPopup="False">
+
+	<Border StyleClass="PopupFrameStyle" MinimumWidthRequest="350" MinimumHeightRequest="200">
+
+		<Grid RowDefinitions="*,*,auto" RowSpacing="10">
+			<Label x:Name="TitleLabel" StyleClass="Title" HorizontalOptions="Start"  Grid.Row="0"/>
+
+			<VerticalStackLayout StyleClass="TitleVerticalStackStyle"  Grid.Row="1">
+				<Label x:Name="MessageLabel" Text="Message"/>
+			</VerticalStackLayout>
+	
+			<HorizontalStackLayout StyleClass="BottomButtonRowStyle" VerticalOptions="End" Grid.Row="2">
+				<Button 
+					Text="OK"
+					HorizontalOptions="End"
+					StyleClass="StandardSizeButtonStyle"
+					Clicked="OnClose"/>
+			</HorizontalStackLayout>
+
+		</Grid>
+	</Border>
+
+</dpviews:PopupView>

@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Maui.Storage;
 using CommunityToolkit.Maui.Views;
+using Data.Translation.Pages;
 using DigitalProduction.Maui.Controls;
 using DigitalProduction.Maui.ViewModels;
 using DigitalProduction.Maui.Views;
@@ -115,8 +116,18 @@ public partial class MainPage : DigitalProductionMainPage
 		}
 
 		ProcessingResult processingResult = viewModel.Process();
+		DisplayAlertPopup view = new()
+		{
+			Title   = "Processing Result",
+			Message = processingResult.Message
+		};
 
-		await DisplayAlert("Processing Result", processingResult.Message, "Ok");
+		if (processingResult.Success)
+		{
+			view.AutomaticallyClose = true;
+		}
+
+		await Shell.Current.ShowPopupAsync(view);
 	}
 
 	private void FlagPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs propertyChangedEventArgs)
