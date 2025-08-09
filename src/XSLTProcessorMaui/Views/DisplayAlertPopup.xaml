@@ -10,7 +10,7 @@
 	x:Name="self"
 	CanBeDismissedByTappingOutsideOfPopup="False">
 
-	<Border StyleClass="PopupFrameStyle" MinimumWidthRequest="350" MinimumHeightRequest="200">
+	<Border StyleClass="PopupFrameStyle" MinimumWidthRequest="350" MinimumHeightRequest="220">
 
 		<Grid RowDefinitions="*,*,auto" RowSpacing="10">
 			<Label x:Name="TitleLabel" StyleClass="Title" HorizontalOptions="Start"  Grid.Row="0"/>
