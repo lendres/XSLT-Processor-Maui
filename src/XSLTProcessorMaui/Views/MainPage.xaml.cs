@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Maui.Storage;
-using CommunityToolkit.Maui.Views;
+using CommunityToolkit.Maui;
+using CommunityToolkit.Maui.Extensions;
 using Data.Translation.Pages;
 using DigitalProduction.Maui.Controls;
 using DigitalProduction.Maui.ViewModels;
@@ -32,13 +33,13 @@ public partial class MainPage : DigitalProductionMainPage
 	async void OnSettings(object sender, EventArgs eventArgs)
 	{
 		SettingsView view = new(new SettingsViewModel());
-		_ = await Shell.Current.ShowPopupAsync(view);
+		_ = await Shell.Current.ShowPopupAsync<bool>(view, new PopupOptions { CanBeDismissedByTappingOutsideOfPopup = false, Shape = null, Shadow = null });
 	}
 
 	async void OnAbout(object sender, EventArgs eventArgs)
 	{
 		AboutView1 view = new(new AboutViewModel(true));
-		_ = await Shell.Current.ShowPopupAsync(view);
+		_ = await Shell.Current.ShowPopupAsync<bool>(view, new PopupOptions { CanBeDismissedByTappingOutsideOfPopup = false, Shape = null, Shadow = null });
 	}
 
 	public async void OnBrowseForXmlInputFile(object sender, EventArgs eventArgs)
@@ -127,7 +128,7 @@ public partial class MainPage : DigitalProductionMainPage
 			view.AutomaticallyClose = true;
 		}
 
-		await Shell.Current.ShowPopupAsync(view);
+		await Shell.Current.ShowPopupAsync<bool>(view, new PopupOptions { CanBeDismissedByTappingOutsideOfPopup = false, Shape = null, Shadow = null });
 	}
 
 	private void FlagPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs propertyChangedEventArgs)
