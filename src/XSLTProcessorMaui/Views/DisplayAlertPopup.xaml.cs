@@ -25,7 +25,7 @@ public partial class DisplayAlertPopup : PopupView
 
 	#region Events
 
-	private void OnOpen(object? sender, CommunityToolkit.Maui.Core.PopupOpenedEventArgs eventArgs)
+	private void OnOpen(object? sender, EventArgs eventArgs)
 	{
 		if (AutomaticallyClose)
 		{

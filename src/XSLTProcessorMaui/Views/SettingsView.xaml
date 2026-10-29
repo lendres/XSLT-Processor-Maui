@@ -7,8 +7,7 @@
 	xmlns:dpcontrols="clr-namespace:DigitalProduction.Maui.Controls;assembly=DigitalProduction.Maui"
 	xmlns:dpviews="clr-namespace:DigitalProduction.Maui.Views;assembly=DigitalProduction.Maui.AppToolkit"
 	x:Class="XSLTProcessorMaui.SettingsView"
-	x:DataType="viewmodel:SettingsViewModel"
-	CanBeDismissedByTappingOutsideOfPopup="False">
+	x:DataType="viewmodel:SettingsViewModel">
 
 	<Border StyleClass="PopupFrameStyle" MinimumWidthRequest="500" MinimumHeightRequest="100">
 

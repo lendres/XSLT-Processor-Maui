@@ -7,8 +7,7 @@
 	xmlns:dpconverters="clr-namespace:DigitalProduction.Maui.Converters;assembly=DigitalProduction.Maui.AppToolkit"
 	xmlns:dpviews="clr-namespace:DigitalProduction.Maui.Views;assembly=DigitalProduction.Maui.AppToolkit"
 	x:Class="Data.Translation.Pages.DisplayAlertPopup"
-	x:Name="self"
-	CanBeDismissedByTappingOutsideOfPopup="False">
+	x:Name="self">
 
 	<Border StyleClass="PopupFrameStyle" MinimumWidthRequest="350" MinimumHeightRequest="220">
 
