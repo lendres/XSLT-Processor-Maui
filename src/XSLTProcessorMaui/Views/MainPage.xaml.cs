@@ -112,7 +112,7 @@ public partial class MainPage : DigitalProductionMainPage
 
 		if (!DigitalProduction.IO.Path.PathIsWritable(viewModel.OutputFileFullPath))
 		{
-			await DisplayAlert("Error", "The output file is not writable.  The file may be open by another application.  Please resolve the situation or choose another file name.", "Ok");
+			await DisplayAlertAsync("Error", "The output file is not writable.  The file may be open by another application.  Please resolve the situation or choose another file name.", "Ok");
 			return;
 		}
 
