@@ -26,7 +26,7 @@ public static class MauiProgram
 		LifecycleOptions lifecycleOptions = new()
 		{
 			EnsureOnScreen			= false,
-			DisableMaximizeButton	= true,
+			DisableMaximizeButton	= false,
 			WindowTitle				= "XSLT Processor"
 		};
 		DigitalProduction.Maui.UI.LifecycleEventsInstaller.ConfigureLifecycleEvents(builder, lifecycleOptions);
